@@ -1,0 +1,35 @@
+cc2540_write(3)
+==============
+
+
+NAME
+----
+cc2540_write - writes data
+
+
+SYNOPSIS
+--------
+*ssize_t cc2540_write (cc2540_t *'dev', void *'buf', size_t 'len');*
+
+
+DESCRIPTION
+-----------
+The *cc2540_write ()* writes up to _len_ bytes from the buffer pointed at
+_buf_ to the device related to the _dev_ structure.
+
+
+RETURN VALUE
+------------
+On success, the number of bytes written is returned (zero indicates nothing
+was written). On error, -1 is returned, and errno is set appropiately.
+
+
+SEE ALSO
+--------
+linkmb:cc2540_read[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

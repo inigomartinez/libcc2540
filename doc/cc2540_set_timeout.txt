@@ -1,0 +1,34 @@
+cc2540_set_timeout(3)
+====================
+
+
+NAME
+----
+cc2540_set_timeout - set timeout
+
+
+SYNOPSIS
+--------
+*void cc2540_set_timeout (cc2540_t *'dev', int 'timeout');*
+
+
+DESCRIPTION
+-----------
+The *cc2540_set_timeout ()* function sets the _timeout_ for the device related
+to the _dev_ structure.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:cc2540_get_timeout[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

@@ -1,0 +1,36 @@
+cc2540_close(3)
+==============
+
+
+NAME
+----
+cc2540_close - closes an opened device and frees data.
+
+
+SYNOPSIS
+--------
+*void cc2540_close (cc2540_t *'dev');*
+
+
+DESCRIPTION
+-----------
+The *cc2540_close ()* function shall close the related device and free an
+allocated _cc2540_t_ structure.
+
+The _dev_ argument specifies the _cc2540_t_ structure to be freed.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:cc2540_open[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

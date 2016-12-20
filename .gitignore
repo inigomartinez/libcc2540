@@ -13,6 +13,7 @@
 *.a
 *.la
 *.lo
+*.pc
 
 # Shared objects (inc. Windows DLLs)
 *.dll
@@ -31,3 +32,26 @@
 # Debug files
 *.dSYM/
 *.su
+
+# swap files
+*.swp
+
+# documentation files
+*.3
+
+# autotools files
+.deps/
+.libs/
+Makefile
+Makefile.in
+/aclocal.m4
+/autom4te.cache
+/build-aux
+/config.*
+/configure
+/libtool
+/stamp-h1
+/m4
+ar-lib
+compile
+.dirstamp

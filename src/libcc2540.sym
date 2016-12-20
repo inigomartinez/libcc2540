@@ -1,0 +1,11 @@
+LIBCC2540_0 {
+global:
+	cc2540_open;
+	cc2540_close;
+	cc2540_read;
+	cc2540_write;
+	cc2540_get_timeout;
+	cc2540_set_timeout;
+local:
+        *;
+};

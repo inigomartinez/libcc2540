@@ -1,0 +1,64 @@
+cc2540_open(3)
+=============
+
+
+NAME
+----
+cc2540_open - opens a device
+
+
+SYNOPSIS
+--------
+*cc2540_t *cc2540_open (const char *'pathname');*
+
+
+DESCRIPTION
+-----------
+The *cc2540_open ()* function shall allocate and initialize a _cc2540_t_
+structure and opens the given device on the specified name.
+
+The _pathname_ argument specifies the name of the serial port handled by the
+OS, eg. "/dev/ttyACM0" or "/dev/ttyUSB0".
+
+Once you end working with the device, it must be closed with
+linkmb:cc2540_close[3].
+
+
+RETURN VALUE
+------------
+The function shall open the given device and return a pointer to a
+_cc2540_t_ structure if successful. Otherwise it shall return NULL and set
+errno to one of the values defined below.
+
+
+ERRORS
+------
+*EINVAL*::
+An invalid argument was given.
+
+
+EXAMPLE
+-------
+[source,c]
+-------------------
+cc2540_t *dev;
+
+dev = cc2540_open ("/dev/ttyACM0");
+if (dev == NULL) {
+    fprintf(stderr, "Unable to open the device: %s\n", strerror(errno));
+    return -1;
+}
+
+cc2540_close (dev);
+-------------------
+
+
+SEE ALSO
+--------
+linkmb:cc2540_close[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>
