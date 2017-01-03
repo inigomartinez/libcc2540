@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Iñigo Martínez <inigomartinez@gmail.com>
+ * Copyright (c) 2016-2017 Iñigo Martínez <inigomartinez@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0+
  */
@@ -63,8 +63,14 @@ CC2540_EXPORT ssize_t
 cc2540_read (cc2540_t *dev,
              void     *buf,
              size_t    len) {
-    if (poll (dev->pfd, 1, dev->timeout) <= 0)
+    int r;
+    if ((r = poll (dev->pfd, 1, dev->timeout)) == -1)
         return -1;
+
+    if (!r) {
+        errno = ETIMEDOUT;
+        return -1;
+    }
 
     return read (dev->dev, buf, len);
 }
