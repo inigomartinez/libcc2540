@@ -1,0 +1,34 @@
+print_gap_evt_dev_init_done(3)
+============================
+
+
+NAME
+----
+print_gap_evt_dev_init_done - prints a gap_evt_dev_init_done event
+
+
+SYNOPSIS
+--------
+*void print_gap_evt_dev_init_done (const gap_evt_dev_init_done_t *'evt');*
+
+
+DESCRIPTION
+-----------
+The *print_gap_evt_dev_init_done ()* function prints the
+_gap_evt_dev_init_done_t_ _evt_ structure.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:print_gap_evt_cmd_status[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

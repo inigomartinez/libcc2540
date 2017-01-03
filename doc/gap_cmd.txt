@@ -1,0 +1,43 @@
+gap_cmd(3)
+=========
+
+
+NAME
+----
+gap_cmd - sends a command to be executed on the device
+
+
+SYNOPSIS
+--------
+*int gap_cmd (cc2540_t *'dev', uint16_t 'op_code', const gap_cmd_t *'cmd', uint8_t 'len', gap_evt_cmd_status_t *'status');*
+
+
+DESCRIPTION
+-----------
+The *gap_cmd ()* function executes the command with _op_code_ identifier,
+with the parameters on the _cmd_ structure with a size of _len_ bytes. If the
+_dev_ device executes it, it fills the _status_ structure.
+
+
+RETURN VALUE
+------------
+*gap_cmd ()* returns 0 for success, and an _errno_ like negative number for
+failure (_errno_ is also set appropriately).
+
+
+ERRORS
+------
+*ENOMSG* If the status event does not correspond to this command.
+*EIO* If the status event contains an error.
+
+
+SEE ALSO
+--------
+linkmb:cc2540_open[3]
+linkmb:cc2540_close[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

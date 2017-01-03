@@ -4,7 +4,12 @@ TXT3 = \
 	cc2540_read.txt \
 	cc2540_write.txt \
 	cc2540_get_timeout.txt \
-	cc2540_set_timeout.txt
+	cc2540_set_timeout.txt \
+	gap_cmd.txt \
+	gap_evt_dev_init_done.txt \
+	print_hci_evt.txt \
+	print_gap_evt_dev_init_done.txt \
+	print_gap_evt_cmd_status.txt
 
 
 EXTRA_DIST = asciidoc.conf $(TXT3)

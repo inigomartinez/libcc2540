@@ -6,6 +6,14 @@ global:
 	cc2540_write;
 	cc2540_get_timeout;
 	cc2540_set_timeout;
+
+	gap_cmd;
+
+	gap_evt_dev_init_done;
+
+	print_hci_evt;
+	print_gap_evt_dev_init_done;
+	print_gap_evt_cmd_status;
 local:
         *;
 };

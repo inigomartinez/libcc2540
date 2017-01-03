@@ -33,7 +33,7 @@ AC_INIT([libcc2540],
 	[inigomartinez@gmail.com],
 	[libcc2540],
 	[https://github.com/inigomartinez/liblibcc2540])
-AC_COPYRIGHT([Copyright (C) 2016 Iñigo Martínez])
+AC_COPYRIGHT([Copyright (C) 2016-2017 Iñigo Martínez])
 
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_AUX_DIR([build-aux])

@@ -19,10 +19,14 @@ AM_LDFLAGS = \
 lib_LTLIBRARIES = libcc2540.la
 
 INST_H_FILES = \
+	cc2540-cmd.h \
+	cc2540-print.h \
 	cc2540.h
 
 libcc2540_la_SOURCES = \
 	$(INST_H_FILES) \
+	cc2540-cmd.c \
+	cc2540-print.c \
 	cc2540-private.h \
 	cc2540.c
 

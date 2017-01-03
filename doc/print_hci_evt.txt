@@ -1,0 +1,33 @@
+print_hci_evt(3)
+===============
+
+
+NAME
+----
+print_hci_evt - prints an hci event
+
+
+SYNOPSIS
+--------
+*void print_hci_evt (const hci_evt_t *'evt');*
+
+
+DESCRIPTION
+-----------
+The *print_hci_evt ()* function prints the _hci_evt_t_ _evt_ structure.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:print_gap_evt_cmd_status[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>
