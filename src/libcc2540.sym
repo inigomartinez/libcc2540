@@ -7,6 +7,7 @@ global:
 	cc2540_get_timeout;
 	cc2540_set_timeout;
 
+	gap_cmd_dev_init;
 	gap_cmd;
 
 	gap_evt_dev_init_done;

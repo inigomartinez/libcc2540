@@ -1,0 +1,58 @@
+gap_cmd_dev_init(3)
+==================
+
+
+NAME
+----
+gap_cmd_dev_init - sends the init command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_dev_init (cc2540_t *'dev', gap_profile_t 'profile_role', uint8_t 'max_scan_responses', const uint8_t 'irk'[BT_IRK_LEN], const uint8_t 'csrk'[BT_CSRK_LEN], uint32_t 'sign_counter');*
+
+
+DESCRIPTION
+-----------
+The *gap_cmd_dev_init ()* function sends the init command to the _dev_ device
+with a given _profile_role_, setting a maximum of _max_scan_responses_, a
+16 byte Identity Resolving Key (IRK) and Connection Signature Resolving Key
+(CSRK) and an initial signature counter.
+
+If either _irk_ or _csrk_ are all 0's, the GAP will randomly generate them.
+
+The list of available profile roles is as follows:
+
+GAP_PROFILE_BROADCASTER
+~~~~~~~~~~~~~~~~~~~~~~~
+A device that sends public advertisings.
+
+GAP_PROFILE_OBSERVER
+~~~~~~~~~~~~~~~~~~~~
+A device that listens to advertisings.
+
+GAP_PROFILE_PERIPHERAL
+~~~~~~~~~~~~~~~~~~~~~~
+A device that sends advertises so it can be connected from a central device. Advertising stops once it is connected.
+
+GAP_PROFILE_CENTRAL
+~~~~~~~~~~~~~~~~~~~
+A device that inits a connection.
+
+
+RETURN VALUE
+------------
+*gap_cmd_dev_init ()* returns 0 for success, and an _errno_ like negative number for
+failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd[3]
+linkmb:gap_evt_dev_init_done[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

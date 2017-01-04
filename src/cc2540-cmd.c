@@ -27,6 +27,28 @@ static inline void __reverse (uint8_t *p, size_t len) {
 }
 
 CC2540_EXPORT int
+gap_cmd_dev_init (cc2540_t      *dev,
+                  gap_profile_t  profile_role,
+                  uint8_t        max_scan_responses,
+                  const uint8_t  irk[BT_IRK_LEN],
+                  const uint8_t  csrk[BT_CSRK_LEN],
+                  uint32_t       sign_counter) {
+    gap_cmd_dev_init_t cmd = {
+        .profile_role = profile_role,
+        .max_scan_responses = max_scan_responses,
+        .sign_counter = htole32 (sign_counter)
+    };
+    gap_evt_cmd_status_t status;
+
+    memcpy (cmd.irk, irk, BT_IRK_LEN);
+    memcpy (cmd.csrk, csrk, BT_CSRK_LEN);
+
+    return gap_cmd (dev,
+                    GAP_CMD_DEV_INIT, (const gap_cmd_t *) &cmd, sizeof (cmd),
+                    &status);
+}
+
+CC2540_EXPORT int
 gap_cmd (cc2540_t             *dev,
          uint16_t              op_code,
          const gap_cmd_t      *cmd,
@@ -46,7 +68,6 @@ gap_cmd (cc2540_t             *dev,
 
     return gap_evt_cmd_status (dev, status, op_code);
 }
-
 
 CC2540_EXPORT int
 gap_evt_dev_init_done (cc2540_t                *dev,

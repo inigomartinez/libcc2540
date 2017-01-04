@@ -5,6 +5,7 @@ TXT3 = \
 	cc2540_write.txt \
 	cc2540_get_timeout.txt \
 	cc2540_set_timeout.txt \
+	gap_cmd_dev_init.txt \
 	gap_cmd.txt \
 	gap_evt_dev_init_done.txt \
 	print_hci_evt.txt \

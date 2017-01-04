@@ -26,12 +26,14 @@ CC2540_BEGIN_DECLS
 
 #define GAP_EVT_DEV_INIT_DONE 0x0600
 
-#define GAP_PROFILE_BROADCASTER 0x01
-#define GAP_PROFILE_OBSERVER    0x02
-#define GAP_PROFILE_PERIPHERAL  0x04
-#define GAP_PROFILE_CENTRAL     0x08
-
 #define GAP_MAX_SCAN_RESPONSES    0xFF
+
+typedef enum {
+    GAP_PROFILE_BROADCASTER = (1 << 0),
+    GAP_PROFILE_OBSERVER    = (1 << 1),
+    GAP_PROFILE_PERIPHERAL  = (1 << 2),
+    GAP_PROFILE_CENTRAL     = (1 << 3)
+} __attribute__((packed)) gap_profile_t;
 
 typedef struct {
     uint8_t  type;
@@ -47,11 +49,11 @@ typedef struct {
 } __attribute__((packed)) hci_evt_t;
 
 typedef struct {
-    uint8_t  profile_role;
-    uint8_t  max_scan_responses;
-    uint8_t  irk[BT_IRK_LEN];
-    uint8_t  csrk[BT_CSRK_LEN];
-    uint32_t sign_counter;
+    gap_profile_t profile_role;
+    uint8_t       max_scan_responses;
+    uint8_t       irk[BT_IRK_LEN];
+    uint8_t       csrk[BT_CSRK_LEN];
+    uint32_t      sign_counter;
 } __attribute__((packed)) gap_cmd_dev_init_t;
 
 typedef union {
@@ -79,6 +81,12 @@ typedef struct {
     uint8_t  data[];
 } __attribute__((packed)) gap_evt_cmd_status_t;
 
+int gap_cmd_dev_init      (cc2540_t                *dev,
+                           gap_profile_t            profile_role,
+                           uint8_t                  max_scan_responses,
+                           const uint8_t            irk[BT_IRK_LEN],
+                           const uint8_t            csrk[BT_CSRK_LEN],
+                           uint32_t                 sign_counter);
 int gap_cmd               (cc2540_t                *dev,
                            uint16_t                 op_code,
                            const gap_cmd_t         *cmd,
