@@ -1,0 +1,240 @@
+gap_cmd_param_set(3)
+===================
+
+
+NAME
+----
+gap_cmd_param_set - sends parameter set command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_param_set (cc2540_t *'dev', gap_param_t 'param', uint16_t 'value');*
+
+
+DESCRIPTION
+-----------
+The *gap_cmd_param_set ()* function sends the set command to the _dev_ device
+for the _param_ parameter setting the given _value_.
+
+The list of available parameters is as follows:
+
+TGAP_GEN_DISC_ADV_MIN
+~~~~~~~~~~~~~~~~~~~~~
+Minimum advertising time in general discoverable mode (msec). Defaults to 0.
+
+TGAP_LIM_ADV_TIMEOUT
+~~~~~~~~~~~~~~~~~~~~
+Maximum advertising time in limited discoverable mode (sec). Defaults to 180 seconds.
+
+TGAP_GEN_DISC_SCAN
+~~~~~~~~~~~~~~~~~~
+Minimum scanning time in general discovery process (msec).
+
+TGAP_LIM_DISC_SCAN
+~~~~~~~~~~~~~~~~~~
+Minimum scanning time in limited discovery process (msec).
+
+TGAP_CONN_EST_ADV_TIMEOUT
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Timeout for advertising in connection establishment process (msec).
+
+TGAP_CONN_PARAM_TIMEOUT
+~~~~~~~~~~~~~~~~~~~~~~~
+Timeout for parameter update notification in connection parameter update process (msec).
+
+TGAP_LIM_DISC_ADV_INT_MIN
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Minimum advertising interval in limited discoverable mode (value * 0.625 msec).
+
+TGAP_LIM_DISC_ADV_INT_MAX
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Maximum advertising interval in limited discoverable mode (value * 0.625 msec).
+
+TGAP_GEN_DISC_ADV_INT_MIN
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Minimum advertising interval in general discoverable mode (value * 0.625 msec).
+
+TGAP_GEN_DISC_ADV_INT_MAX
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Maximum advertising interval in general discoverable mode (value * 0.625 msec).
+
+TGAP_CONN_ADV_INT_MIN
+~~~~~~~~~~~~~~~~~~~~~
+Minimum advertising interval in connectable mode (value * 0.625 msec).
+
+TGAP_CONN_ADV_INT_MAX
+~~~~~~~~~~~~~~~~~~~~~
+Maximum advertising interval in connectable mode (value * 0.625 msec).
+
+TGAP_CONN_SCAN_INT
+~~~~~~~~~~~~~~~~~~
+Scanning interval when link layer initiating state in connectable mode (value * 0.625 msec).
+
+TGAP_CONN_SCAN_WIND
+~~~~~~~~~~~~~~~~~~~
+Scanning window when link layer initiating state in connectable mode (value * 0.625 msec).
+
+TGAP_CONN_HIGH_SCAN_INT
+~~~~~~~~~~~~~~~~~~~~~~~
+Scanning interval when link layer initiating state in connectable mode with high duty scan cycle (value * 0.625 msec).
+
+TGAP_CONN_HIGH_SCAN_WIND
+~~~~~~~~~~~~~~~~~~~~~~~~
+Scanning window when link layer initiating state in connectable mode with high duty scan cycle (value * 0.625 msec).
+
+TGAP_GEN_DISC_SCAN_INT
+~~~~~~~~~~~~~~~~~~~~~~
+Scanning interval when link layer scanning state in general discovery process (value * 0.625 msec).
+
+TGAP_GEN_DISC_SCAN_WIND
+~~~~~~~~~~~~~~~~~~~~~~~
+Scanning window when link layer scanning state in general discovery process (value * 0.625 msec).
+
+TGAP_LIM_DISC_SCAN_INT
+~~~~~~~~~~~~~~~~~~~~~~
+Scanning interval when link layer scanning state in limited discovery process (value * 0.625 msec).
+
+TGAP_LIM_DISC_SCAN_WIND
+~~~~~~~~~~~~~~~~~~~~~~~
+Scanning window when link layer scanning state in limited discovery process (value * 0.625 msec).
+
+TGAP_CONN_EST_ADV
+~~~~~~~~~~~~~~~~~
+Advertising interval in connection establishment process (value * 0.625 msec). Deprecated.
+
+TGAP_CONN_EST_INT_MIN
+~~~~~~~~~~~~~~~~~~~~~
+Minimum interval when link layer connection in connection establishment process (value * 1.25 msec).
+
+TGAP_CONN_EST_INT_MAX
+~~~~~~~~~~~~~~~~~~~~~
+Maximum interval when link layer connection in connection establishment process (value * 1.25 msec).
+
+TGAP_CONN_EST_SCAN_INT
+~~~~~~~~~~~~~~~~~~~~~~
+Scanning interval when link layer initiating state in connection establishment process (value * 0.625 msec).
+
+TGAP_CONN_EST_SCAN_WIND
+~~~~~~~~~~~~~~~~~~~~~~~
+Scanning window when link layer initiating state in connection establishment process (value * 0.625 msec).
+
+TGAP_CONN_EST_SUPERV_TIMEOUT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Timeout for supervision when link layer connection in connection establishment process (value * 0.625 msec).
+
+TGAP_CONN_EST_LATENCY
+~~~~~~~~~~~~~~~~~~~~~
+Slave latency when link layer connection in connection establishment process.
+
+TGAP_CONN_EST_MIN_CE_LEN
+~~~~~~~~~~~~~~~~~~~~~~~~
+Minimum length of connection information in connection establishment process (value * 0.625 msec).
+
+TGAP_CONN_EST_MAX_CE_LEN
+~~~~~~~~~~~~~~~~~~~~~~~~
+Maximum length of connection information in connection establishment process (value * 0.625 msec).
+
+TGAP_PRIVATE_ADDR_INT
+~~~~~~~~~~~~~~~~~~~~~
+Minimum interval in private address changes (min). Defaults to 15 minutes.
+
+TGAP_CONN_PAUSE_CENTRAL
+~~~~~~~~~~~~~~~~~~~~~~~
+Pause central (sec). Defaults to 1 second.
+
+TGAP_CONN_PAUSE_PERIPHERAL
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Minimum time for peripheral connection update process in connection establishment process (sec). Defaults to 5 seconds.
+
+TGAP_SM_TIMEOUT
+~~~~~~~~~~~~~~~
+Timeout for SM message (msec). Defaults to 30 seconds.
+
+TGAP_SM_MIN_KEY_LEN
+~~~~~~~~~~~~~~~~~~~
+Minimum SM key length. Defaults to 7.
+
+TGAP_SM_MAX_KEY_LEN
+~~~~~~~~~~~~~~~~~~~
+Maximum SM key length. Defaults to 16.
+
+TGAP_FILTER_ADV_REPORTS
+~~~~~~~~~~~~~~~~~~~~~~~
+Filtering duplicate advertising reports. Defaults to true.
+
+TGAP_SCAN_RSP_RSSI_MIN
+~~~~~~~~~~~~~~~~~~~~~~
+Minimum RSSI to be reported in scanning process. Defaults to -127.
+
+TGAP_REJECT_CONN_PARAMS
+~~~~~~~~~~~~~~~~~~~~~~~
+Reject connection parameter update request on central device. Defaults to false.
+
+The following parameters are for testing and should not be used:
+
+TGAP_GAP_TESTCODE
+~~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - No response
+
+TGAP_SM_TESTCODE
+~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - No response
+2 - Bad confirm sending
+3 - Bad confirm verify
+4 - Enable SMP confirm message sending
+
+TGAP_GATT_TESTCODE
+~~~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - Ignore request
+2 - Allow prepare write request forwarding
+3 - Maximum ATT MTU size is used in Exchange MTU response
+4 - Allow prepare write request corrupt data
+
+TGAP_ATT_TESTCODE
+~~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - Disable authentication of incoming signature
+
+TGAP_GGS_TESTCODE
+~~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - Allow writing make device name attribute
+2 - Allow writing make appearance attribute
+3 - Allow writing make peripheral privacy flag attribute (with authentication).
+
+TGAP_L2CAP_TESTCODE
+~~~~~~~~~~~~~~~~~~~
+0 - Test mode off
+1 - Reserved
+2 - Refuse connection – LE_PSM not supported
+3 - Reserved
+4 - Refuse connection - not enough resources
+5 - Refuse connection - not enough authentication
+6 - Refuse connection - not enough authorization
+7 - Refuse connection - not enough size of encryption key
+8 - Refuse connection - not enough encryption
+9 - Enable sending of out of range credits (0 or greater than 65535)
+10 - Send SDU larger than the length specified in first LE-frame
+11 - Send LE-frame when credit count in local device is zero
+
+
+RETURN VALUE
+------------
+Returns 0 for success, and an _errno_ like negative number for failure
+(_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd[3]
+linkmb:gap_cmd_param_get[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

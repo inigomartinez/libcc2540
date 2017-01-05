@@ -11,4 +11,6 @@ LDADD = ${top_builddir}/src/libcc2540.la
 
 noinst_PROGRAMS = \
 	test-cc2540 \
-	test-gap-dev-init
+	test-gap-dev-init \
+	test-gap-param-set \
+	test-gap-param-get

@@ -14,6 +14,14 @@
 #include "cc2540.h"
 #include "cc2540-cmd.h"
 
+#define get_unaligned(type, ptr) \
+__extension__ ({ \
+    struct __attribute__((packed)) { \
+        type __v; \
+    } *__p = (__typeof__(__p)) (ptr); \
+    __p->__v; \
+})
+
 int gap_evt_cmd_status (cc2540_t             *dev,
                         gap_evt_cmd_status_t *evt,
                         uint16_t              op_code);
@@ -46,6 +54,41 @@ gap_cmd_dev_init (cc2540_t      *dev,
     return gap_cmd (dev,
                     GAP_CMD_DEV_INIT, (const gap_cmd_t *) &cmd, sizeof (cmd),
                     &status);
+}
+
+CC2540_EXPORT int
+gap_cmd_param_set (cc2540_t    *dev,
+                   gap_param_t  param,
+                   uint16_t     value) {
+    gap_cmd_param_set_t cmd = {
+        .param = param,
+        .value = htole16 (value)
+    };
+    gap_evt_cmd_status_t status;
+
+    return gap_cmd (dev,
+                    GAP_CMD_PARAM_SET, (const gap_cmd_t *) &cmd, sizeof (cmd),
+                    &status);
+}
+
+CC2540_EXPORT int
+gap_cmd_param_get (cc2540_t    *dev,
+                   gap_param_t  param,
+                   uint16_t    *value) {
+    int r;
+    gap_cmd_param_get_t cmd = {
+        .param = param
+    };
+    gap_evt_cmd_status_t status;
+
+    if ((r = gap_cmd (dev,
+                      GAP_CMD_PARAM_GET, (const gap_cmd_t *) &cmd, sizeof (cmd),
+                      &status)) < 0)
+        return r;
+
+    *value = le16toh (get_unaligned (uint16_t, status.data));
+
+    return 0;
 }
 
 CC2540_EXPORT int

@@ -23,6 +23,8 @@ CC2540_BEGIN_DECLS
 #define HCI_TYPE_EVENT      0x04
 
 #define GAP_CMD_DEV_INIT      0xFE00
+#define GAP_CMD_PARAM_SET     0xFE30
+#define GAP_CMD_PARAM_GET     0xFE31
 
 #define GAP_EVT_DEV_INIT_DONE 0x0600
 
@@ -34,6 +36,54 @@ typedef enum {
     GAP_PROFILE_PERIPHERAL  = (1 << 2),
     GAP_PROFILE_CENTRAL     = (1 << 3)
 } __attribute__((packed)) gap_profile_t;
+
+typedef enum {
+    TGAP_GEN_DISC_ADV_MIN,
+    TGAP_LIM_ADV_TIMEOUT,
+    TGAP_GEN_DISC_SCAN,
+    TGAP_LIM_DISC_SCAN,
+    TGAP_CONN_EST_ADV_TIMEOUT,
+    TGAP_CONN_PARAM_TIMEOUT,
+    TGAP_LIM_DISC_ADV_INT_MIN,
+    TGAP_LIM_DISC_ADV_INT_MAX,
+    TGAP_GEN_DISC_ADV_INT_MIN,
+    TGAP_GEN_DISC_ADV_INT_MAX,
+    TGAP_CONN_ADV_INT_MIN,
+    TGAP_CONN_ADV_INT_MAX,
+    TGAP_CONN_SCAN_INT,
+    TGAP_CONN_SCAN_WIND,
+    TGAP_CONN_HIGH_SCAN_INT,
+    TGAP_CONN_HIGH_SCAN_WIND,
+    TGAP_GEN_DISC_SCAN_INT,
+    TGAP_GEN_DISC_SCAN_WIND,
+    TGAP_LIM_DISC_SCAN_INT,
+    TGAP_LIM_DISC_SCAN_WIND,
+    TGAP_CONN_EST_ADV,
+    TGAP_CONN_EST_INT_MIN,
+    TGAP_CONN_EST_INT_MAX,
+    TGAP_CONN_EST_SCAN_INT,
+    TGAP_CONN_EST_SCAN_WIND,
+    TGAP_CONN_EST_SUPERV_TIMEOUT,
+    TGAP_CONN_EST_LATENCY,
+    TGAP_CONN_EST_MIN_CE_LEN,
+    TGAP_CONN_EST_MAX_CE_LEN,
+    TGAP_PRIVATE_ADDR_INT,
+    TGAP_CONN_PAUSE_CENTRAL,
+    TGAP_CONN_PAUSE_PERIPHERAL,
+    TGAP_SM_TIMEOUT,
+    TGAP_SM_MIN_KEY_LEN,
+    TGAP_SM_MAX_KEY_LEN,
+    TGAP_FILTER_ADV_REPORTS,
+    TGAP_SCAN_RSP_RSSI_MIN,
+    TGAP_REJECT_CONN_PARAMS,
+    // TESTING PARAMS
+    TGAP_GAP_TESTCODE,
+    TGAP_SM_TESTCODE,
+    TGAP_GATT_TESTCODE = 100,
+    TGAP_ATT_TESTCODE,
+    TGAP_GGS_TESTCODE,
+    TGAP_L2CAP_TESTCODE
+} __attribute__((packed)) gap_param_t;
 
 typedef struct {
     uint8_t  type;
@@ -56,8 +106,19 @@ typedef struct {
     uint32_t      sign_counter;
 } __attribute__((packed)) gap_cmd_dev_init_t;
 
+typedef struct {
+    gap_param_t param;
+    uint16_t    value;
+} __attribute__((packed)) gap_cmd_param_set_t;
+
+typedef struct {
+    gap_param_t param;
+} __attribute__((packed)) gap_cmd_param_get_t;
+
 typedef union {
-    gap_cmd_dev_init_t dev_init;
+    gap_cmd_dev_init_t  dev_init;
+    gap_cmd_param_set_t param_set;
+    gap_cmd_param_get_t param_get;
 } __attribute__((packed)) gap_cmd_t;
 
 typedef struct {
@@ -87,6 +148,12 @@ int gap_cmd_dev_init      (cc2540_t                *dev,
                            const uint8_t            irk[BT_IRK_LEN],
                            const uint8_t            csrk[BT_CSRK_LEN],
                            uint32_t                 sign_counter);
+int gap_cmd_param_set     (cc2540_t                *dev,
+                           gap_param_t              param,
+                           uint16_t                 value);
+int gap_cmd_param_get     (cc2540_t                *dev,
+                           gap_param_t              param,
+                           uint16_t                *value);
 int gap_cmd               (cc2540_t                *dev,
                            uint16_t                 op_code,
                            const gap_cmd_t         *cmd,
