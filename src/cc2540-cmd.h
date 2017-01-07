@@ -19,11 +19,6 @@ CC2540_BEGIN_DECLS
 
 #define HCI_EVT_MAX_LEN UINT8_MAX
 
-#define HCI_TYPE_CMD        0x01
-#define HCI_TYPE_ASYNC_DATA 0x02
-#define HCI_TYPE_SYNC_DATA  0x03
-#define HCI_TYPE_EVENT      0x04
-
 #define GAP_CMD_DEV_INIT      0xFE00
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
@@ -32,6 +27,13 @@ CC2540_BEGIN_DECLS
 #define GAP_EVT_CMD_STATUS    0x067F
 
 #define GAP_MAX_SCAN_RESPONSES 0xFF
+
+typedef enum {
+    HCI_TYPE_CMD        = 0x01,
+    HCI_TYPE_ASYNC_DATA = 0x02,
+    HCI_TYPE_SYNC_DATA  = 0x03,
+    HCI_TYPE_EVENT      = 0x04
+} __attribute__((packed)) hci_type_t;
 
 typedef enum {
     GAP_PROFILE_BROADCASTER = (1 << 0),
@@ -89,16 +91,16 @@ typedef enum {
 } __attribute__((packed)) gap_param_t;
 
 typedef struct {
-    uint8_t  type;
-    uint16_t op_code;
-    uint8_t  len;
+    hci_type_t type;
+    uint16_t   op_code;
+    uint8_t    len;
 } __attribute__((packed)) hci_cmd_info_t;
 
 typedef struct {
-    uint8_t  type;
-    uint8_t  event_code;
-    uint8_t  data_len;
-    uint16_t op_code;
+    hci_type_t type;
+    uint8_t    event_code;
+    uint8_t    data_len;
+    uint16_t   op_code;
 } __attribute__((packed)) hci_evt_info_t;
 
 typedef struct {
