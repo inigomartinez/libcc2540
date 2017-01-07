@@ -98,7 +98,7 @@ typedef struct {
 
 typedef struct {
     hci_type_t type;
-    uint8_t    event_code;
+    uint8_t    evt_code;
     uint8_t    data_len;
     uint16_t   op_code;
 } __attribute__((packed)) hci_evt_info_t;

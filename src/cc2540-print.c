@@ -16,7 +16,7 @@ CC2540_EXPORT void
 print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
     printf ("type: 0x%02x\n", evt->type);
-    printf ("event_code: 0x%02x\n", evt->event_code);
+    printf ("evt_code: 0x%02x\n", evt->evt_code);
     printf ("data_len: 0x%02x\n", evt->data_len);
     printf ("op_code: 0x%04x\n", evt->op_code);
 }
