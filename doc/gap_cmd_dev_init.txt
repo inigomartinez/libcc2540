@@ -49,7 +49,6 @@ failure (_errno_ is also set appropriately).
 SEE ALSO
 --------
 linkmb:gap_cmd[3]
-linkmb:gap_evt_dev_init_done[3]
 
 
 AUTHORS

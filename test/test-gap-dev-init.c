@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0+
  */
 
+#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +20,7 @@ int
 main (int argc, char **argv) {
     int r = EXIT_SUCCESS;
     cc2540_t *dev;
-    gap_evt_dev_init_done_t evt;
+    hci_evt_t evt;
 
     if (argc < 2) {
         fprintf (stderr, "use: %s /dev/ttyUSB0\n", argv[0]);
@@ -41,10 +42,12 @@ main (int argc, char **argv) {
         goto close_dev;
     }
 
-    if ((r = gap_evt_dev_init_done (dev, &evt)) < 0) {
-        fprintf (stderr, "Error in gap_evt_dev_init_done: %s\n", strerror (-r));
+    if ((r = hci_evt (dev, &evt) < 0)) {
+        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
         goto close_dev;
     }
+
+    assert (HCI_EVT_IS (evt, GAP_EVT_DEV_INIT_DONE));
 
 close_dev:
     cc2540_close (dev);

@@ -9,14 +9,14 @@ gap_cmd - sends a command to be executed on the device
 
 SYNOPSIS
 --------
-*int gap_cmd (cc2540_t *'dev', uint16_t 'op_code', const gap_cmd_t *'cmd', uint8_t 'len', gap_evt_cmd_status_t *'status');*
+*int gap_cmd (cc2540_t *'dev', uint16_t 'op_code', const gap_cmd_t *'cmd', uint8_t 'len', hci_evt_t *'evt');*
 
 
 DESCRIPTION
 -----------
 The *gap_cmd ()* function executes the command with _op_code_ identifier,
 with the parameters on the _cmd_ structure with a size of _len_ bytes. If the
-_dev_ device executes it, it fills the _status_ structure.
+_dev_ device executes it, it fills the _evt_ with proper event information.
 
 
 RETURN VALUE

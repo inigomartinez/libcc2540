@@ -12,9 +12,9 @@ global:
 	gap_cmd_param_get;
 	gap_cmd;
 
-	gap_evt_dev_init_done;
+	hci_evt;
 
-	print_hci_evt;
+	print_hci_evt_info;
 	print_gap_evt_dev_init_done;
 	print_gap_evt_cmd_status;
 local:

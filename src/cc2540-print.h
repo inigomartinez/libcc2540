@@ -12,7 +12,7 @@
 
 CC2540_BEGIN_DECLS
 
-void print_hci_evt               (const hci_evt_t               *evt);
+void print_hci_evt_info          (const hci_evt_info_t          *evt);
 void print_gap_evt_dev_init_done (const gap_evt_dev_init_done_t *evt);
 void print_gap_evt_cmd_status    (const gap_evt_cmd_status_t    *evt);
 

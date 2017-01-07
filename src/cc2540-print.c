@@ -13,7 +13,7 @@
 #include "cc2540-print.h"
 
 CC2540_EXPORT void
-print_hci_evt (const hci_evt_t *evt) {
+print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
     printf ("type: 0x%02x\n", evt->type);
     printf ("event_code: 0x%02x\n", evt->event_code);

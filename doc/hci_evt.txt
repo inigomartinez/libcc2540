@@ -1,0 +1,40 @@
+hci_evt(3)
+=========
+
+
+NAME
+----
+hci_evt - reads an event from the device and parses it
+
+
+SYNOPSIS
+--------
+*int hci_evt (cc2540_t *'dev', hci_evt_t *'evt');*
+
+
+DESCRIPTION
+-----------
+*hci_evt ()* function executes reads an event from the _dev_ device and parses
+the event filling the information on the _evt_ variable.
+
+
+RETURN VALUE
+------------
+*hci_evt ()* returns 0 for success, and an _errno_ like negative number for
+failure (_errno_ is also set appropriately).
+
+
+ERRORS
+------
+*ENOSYS* If the event code is unknown or it is not implemented.
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

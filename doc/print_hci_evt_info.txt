@@ -1,20 +1,20 @@
-print_hci_evt(3)
-===============
+print_hci_evt_info(3)
+====================
 
 
 NAME
 ----
-print_hci_evt - prints an hci event
+print_hci_evt_info - prints an hci event packet information
 
 
 SYNOPSIS
 --------
-*void print_hci_evt (const hci_evt_t *'evt');*
+*void print_hci_evt_info (const hci_evt_info_t *'evt');*
 
 
 DESCRIPTION
 -----------
-The *print_hci_evt ()* function prints the _hci_evt_t_ _evt_ structure.
+*print_hci_evt_info ()* function prints the _evt_ packet information.
 
 
 RETURN VALUE

@@ -17,6 +17,8 @@ CC2540_BEGIN_DECLS
 #define BT_LTK_RAND_LEN 8
 #define BT_ADDR_LEN     6
 
+#define HCI_EVT_MAX_LEN UINT8_MAX
+
 #define HCI_TYPE_CMD        0x01
 #define HCI_TYPE_ASYNC_DATA 0x02
 #define HCI_TYPE_SYNC_DATA  0x03
@@ -27,8 +29,9 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_PARAM_GET     0xFE31
 
 #define GAP_EVT_DEV_INIT_DONE 0x0600
+#define GAP_EVT_CMD_STATUS    0x067F
 
-#define GAP_MAX_SCAN_RESPONSES    0xFF
+#define GAP_MAX_SCAN_RESPONSES 0xFF
 
 typedef enum {
     GAP_PROFILE_BROADCASTER = (1 << 0),
@@ -89,14 +92,14 @@ typedef struct {
     uint8_t  type;
     uint16_t op_code;
     uint8_t  len;
-} __attribute__((packed)) hci_t;
+} __attribute__((packed)) hci_cmd_info_t;
 
 typedef struct {
     uint8_t  type;
     uint8_t  event_code;
     uint8_t  data_len;
     uint16_t op_code;
-} __attribute__((packed)) hci_evt_t;
+} __attribute__((packed)) hci_evt_info_t;
 
 typedef struct {
     gap_profile_t profile_role;
@@ -121,9 +124,11 @@ typedef union {
     gap_cmd_param_get_t param_get;
 } __attribute__((packed)) gap_cmd_t;
 
+#define GAP_CMD_T(o) ((gap_cmd_t *) o)
+
 typedef struct {
-    hci_t     hci;
-    gap_cmd_t cmd;
+    hci_cmd_info_t hci;
+    gap_cmd_t      cmd;
 } __attribute__((packed)) hci_cmd_t;
 
 typedef struct {
@@ -135,6 +140,8 @@ typedef struct {
     uint8_t  csrk[BT_CSRK_LEN];
 } __attribute__((packed)) gap_evt_dev_init_done_t;
 
+#define GAP_EVT_DEV_INIT_DONE_T(o) ((gap_evt_dev_init_done_t *) o)
+
 typedef struct {
     uint8_t  status;
     uint16_t op_code;
@@ -142,25 +149,37 @@ typedef struct {
     uint8_t  data[];
 } __attribute__((packed)) gap_evt_cmd_status_t;
 
-int gap_cmd_dev_init      (cc2540_t                *dev,
-                           gap_profile_t            profile_role,
-                           uint8_t                  max_scan_responses,
-                           const uint8_t            irk[BT_IRK_LEN],
-                           const uint8_t            csrk[BT_CSRK_LEN],
-                           uint32_t                 sign_counter);
-int gap_cmd_param_set     (cc2540_t                *dev,
-                           gap_param_t              param,
-                           uint16_t                 value);
-int gap_cmd_param_get     (cc2540_t                *dev,
-                           gap_param_t              param,
-                           uint16_t                *value);
-int gap_cmd               (cc2540_t                *dev,
-                           uint16_t                 op_code,
-                           const gap_cmd_t         *cmd,
-                           uint8_t                  len,
-                           gap_evt_cmd_status_t    *status);
-int gap_evt_dev_init_done (cc2540_t                *dev,
-                           gap_evt_dev_init_done_t *evt);
+#define GAP_EVT_CMD_STATUS_T(o) ((gap_evt_cmd_status_t *) o)
+
+typedef struct {
+    uint16_t  evt_code;
+    struct {
+        uint8_t status;
+        uint8_t data[HCI_EVT_MAX_LEN - 1];
+    } evt;
+} __attribute__((packed)) hci_evt_t;
+
+#define HCI_EVT_IS(evt, code) ((evt).evt_code == code)
+
+int gap_cmd_dev_init  (cc2540_t        *dev,
+                       gap_profile_t    profile_role,
+                       uint8_t          max_scan_responses,
+                       const uint8_t    irk[BT_IRK_LEN],
+                       const uint8_t    csrk[BT_CSRK_LEN],
+                       uint32_t         sign_counter);
+int gap_cmd_param_set (cc2540_t        *dev,
+                       gap_param_t      param,
+                       uint16_t         value);
+int gap_cmd_param_get (cc2540_t        *dev,
+                       gap_param_t      param,
+                       uint16_t        *value);
+int gap_cmd           (cc2540_t        *dev,
+                       uint16_t         op_code,
+                       const gap_cmd_t *cmd,
+                       uint8_t          len,
+                       hci_evt_t       *evt);
+int hci_evt           (cc2540_t        *dev,
+                       hci_evt_t       *evt);
 
 CC2540_END_DECLS
 
