@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Iñigo Martínez <inigomartinez@gmail.com>
+ * Copyright (c) 2016-2017 Iñigo Martínez <inigomartinez@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0+
  */
@@ -30,7 +30,7 @@ ssize_t   cc2540_read        (cc2540_t   *dev,
                               void       *buf,
                               size_t      len);
 ssize_t   cc2540_write       (cc2540_t   *dev,
-                              void       *buf,
+                              const void *buf,
                               size_t      len);
 
 void      cc2540_get_timeout (cc2540_t   *dev,

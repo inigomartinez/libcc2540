@@ -76,9 +76,9 @@ cc2540_read (cc2540_t *dev,
 }
 
 CC2540_EXPORT ssize_t
-cc2540_write (cc2540_t *dev,
-              void     *buf,
-              size_t    len) {
+cc2540_write (cc2540_t   *dev,
+              const void *buf,
+              size_t      len) {
     return write (dev->dev, buf, len);
 }
 
