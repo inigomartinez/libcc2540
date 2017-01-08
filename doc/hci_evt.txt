@@ -31,7 +31,7 @@ ERRORS
 
 SEE ALSO
 --------
-linkmb:gap_cmd[3]
+linkmb:hci_cmd[3]
 
 
 AUTHORS

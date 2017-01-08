@@ -13,6 +13,7 @@
 
 #include "cc2540-private.h"
 #include "cc2540.h"
+#include "cc2540-cmd-private.h"
 #include "cc2540-cmd.h"
 
 #define get_unaligned(type, ptr) \
@@ -64,19 +65,16 @@ gap_cmd_dev_init (cc2540_t      *dev,
                   const uint8_t  irk[BT_IRK_LEN],
                   const uint8_t  csrk[BT_CSRK_LEN],
                   uint32_t       sign_counter) {
-    gap_cmd_dev_init_t cmd = {
-        .profile_role = profile_role,
-        .max_scan_responses = max_scan_responses,
-        .sign_counter = htole32 (sign_counter)
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DEV_INIT, sizeof (gap_cmd_dev_init_t)),
+        HCI_CMD_DEV_INIT (profile_role, max_scan_responses, sign_counter)
     };
     hci_evt_t evt;
 
-    memcpy (cmd.irk, irk, BT_IRK_LEN);
-    memcpy (cmd.csrk, csrk, BT_CSRK_LEN);
+    memcpy (hci.cmd.dev_init.irk, irk, BT_IRK_LEN);
+    memcpy (hci.cmd.dev_init.csrk, csrk, BT_CSRK_LEN);
 
-    return gap_cmd (dev,
-                    GAP_CMD_DEV_INIT, GAP_CMD_T (&cmd), sizeof (cmd),
-                    &evt);
+    return hci_cmd (dev, &hci, &evt);
 }
 
 CC2540_EXPORT int
@@ -84,31 +82,26 @@ gap_cmd_dev_disc (cc2540_t   *dev,
                   gap_scan_t  mode,
                   bool        active_scan,
                   bool        white_list) {
-    gap_cmd_dev_disc_t cmd = {
-        .mode = mode,
-        .active_scan = active_scan,
-        .white_list = white_list
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DEV_DISC, sizeof (gap_cmd_dev_disc_t)),
+        HCI_CMD_DEV_DISC (mode, active_scan, white_list)
     };
     hci_evt_t evt;
 
-    return gap_cmd (dev,
-                    GAP_CMD_DEV_DISC, GAP_CMD_T (&cmd), sizeof (cmd),
-                    &evt);
+    return hci_cmd (dev, &hci, &evt);
 }
 
 CC2540_EXPORT int
 gap_cmd_param_set (cc2540_t    *dev,
                    gap_param_t  param,
                    uint16_t     value) {
-    gap_cmd_param_set_t cmd = {
-        .param = param,
-        .value = htole16 (value)
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_PARAM_SET, sizeof (gap_cmd_param_set_t)),
+        HCI_CMD_PARAM_SET (param, value)
     };
     hci_evt_t evt;
 
-    return gap_cmd (dev,
-                    GAP_CMD_PARAM_SET, GAP_CMD_T (&cmd), sizeof (cmd),
-                    &evt);
+    return hci_cmd (dev, &hci, &evt);
 }
 
 CC2540_EXPORT int
@@ -116,14 +109,13 @@ gap_cmd_param_get (cc2540_t    *dev,
                    gap_param_t  param,
                    uint16_t    *value) {
     int r;
-    gap_cmd_param_get_t cmd = {
-        .param = param
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_PARAM_GET, sizeof (gap_cmd_param_get_t)),
+        HCI_CMD_PARAM_GET (param)
     };
     hci_evt_t evt;
 
-    if ((r = gap_cmd (dev,
-                      GAP_CMD_PARAM_GET, GAP_CMD_T (&cmd), sizeof (cmd),
-                      &evt)) < 0)
+    if ((r = hci_cmd (dev, &hci, &evt)) < 0)
         return r;
 
     *value = le16toh (get_unaligned (uint16_t, GAP_EVT_CMD_STATUS_T (&(evt.evt))->data));
@@ -132,22 +124,11 @@ gap_cmd_param_get (cc2540_t    *dev,
 }
 
 CC2540_EXPORT int
-gap_cmd (cc2540_t        *dev,
-         uint16_t         op_code,
-         const gap_cmd_t *cmd,
-         uint8_t          len,
+hci_cmd (cc2540_t        *dev,
+         const hci_cmd_t *cmd,
          hci_evt_t       *evt) {
     int r;
-    hci_cmd_t hci = {
-        .hci = {
-            .type = HCI_TYPE_CMD,
-            .op_code = htole16 (op_code),
-            .len = len
-        }
-    };
-
-    hci.cmd = *cmd;
-    if (cc2540_write (dev, &hci, sizeof (hci.hci) + len) == -1)
+    if (cc2540_write (dev, cmd, sizeof (cmd->hci) + cmd->hci.len) == -1)
         return -errno;
 
     if ((r = hci_evt (dev, evt)) < 0)

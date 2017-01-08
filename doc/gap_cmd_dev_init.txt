@@ -48,7 +48,8 @@ failure (_errno_ is also set appropriately).
 
 SEE ALSO
 --------
-linkmb:gap_cmd[3]
+linkmb:cc2540_open[3]
+linkmb:cc2540_close[3]
 
 
 AUTHORS

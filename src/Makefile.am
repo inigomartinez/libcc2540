@@ -25,6 +25,7 @@ INST_H_FILES = \
 
 libcc2540_la_SOURCES = \
 	$(INST_H_FILES) \
+	cc2540-cmd-private.h \
 	cc2540-cmd.c \
 	cc2540-print.c \
 	cc2540-private.h \

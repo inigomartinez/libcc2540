@@ -230,7 +230,6 @@ Returns 0 for success, and an _errno_ like negative number for failure
 
 SEE ALSO
 --------
-linkmb:gap_cmd[3]
 linkmb:gap_cmd_param_get[3]
 
 

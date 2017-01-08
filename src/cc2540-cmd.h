@@ -161,8 +161,6 @@ typedef union {
     gap_cmd_param_get_t param_get;
 } __attribute__((packed)) gap_cmd_t;
 
-#define GAP_CMD_T(o) ((gap_cmd_t *) o)
-
 typedef struct {
     hci_cmd_info_t hci;
     gap_cmd_t      cmd;
@@ -238,10 +236,9 @@ int gap_cmd_param_set (cc2540_t        *dev,
 int gap_cmd_param_get (cc2540_t        *dev,
                        gap_param_t      param,
                        uint16_t        *value);
-int gap_cmd           (cc2540_t        *dev,
-                       uint16_t         op_code,
-                       const gap_cmd_t *cmd,
-                       uint8_t          len,
+
+int hci_cmd           (cc2540_t        *dev,
+                       const hci_cmd_t *cmd,
                        hci_evt_t       *evt);
 int hci_evt           (cc2540_t        *dev,
                        hci_evt_t       *evt);

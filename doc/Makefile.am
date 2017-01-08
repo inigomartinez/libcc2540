@@ -9,7 +9,7 @@ TXT3 = \
 	gap_cmd_dev_disc.txt \
 	gap_cmd_param_set.txt \
 	gap_cmd_param_get.txt \
-	gap_cmd.txt \
+	hci_cmd.txt \
 	hci_evt.txt \
 	print_hci_evt_info.txt \
 	print_gap_evt_dev_init_done.txt \

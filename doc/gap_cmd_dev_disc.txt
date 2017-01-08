@@ -45,7 +45,8 @@ number for failure (_errno_ is also set appropriately).
 
 SEE ALSO
 --------
-linkmb:gap_cmd[3]
+linkmb:gap_cmd_dev_init[3]
+linkmb:gap_cmd_param_get[3]
 
 
 AUTHORS

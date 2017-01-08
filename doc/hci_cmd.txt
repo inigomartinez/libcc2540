@@ -1,0 +1,41 @@
+hci_cmd(3)
+=========
+
+
+NAME
+----
+hci_cmd - sends a command to be executed on the device
+
+
+SYNOPSIS
+--------
+*int hci_cmd (cc2540_t *'dev', const hci_cmd_t *'cmd', hci_evt_t *'evt');*
+
+
+DESCRIPTION
+-----------
+*hci_cmd ()* function sends the _cmd_ command to _dev_ device to be executed
+and fills the _evt_ with proper event information.
+
+
+RETURN VALUE
+------------
+*hci_cmd ()* returns 0 for success, and an _errno_ like negative number for
+failure (_errno_ is also set appropriately).
+
+
+ERRORS
+------
+*ENOMSG* If the status event does not correspond to this command.
+*EIO* If the status event contains an error.
+
+
+SEE ALSO
+--------
+linkmb:hci_evt[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>
