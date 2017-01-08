@@ -1,0 +1,54 @@
+gap_cmd_dev_disc(3)
+==================
+
+
+NAME
+----
+gap_cmd_dev_disc - sends the device discovery request command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_dev_disc (cc2540_t *'dev', gap_scan_t 'mode', bool 'active_scan', bool 'white_list');*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_dev_disc ()* function sends the device discovery request command
+to the _dev_ in the _mode_ discovery mode, with _active_scan_ and using a
+_white_list_.
+
+The list of available scan modes is as follows:
+
+GAP_SCAN_NON_DISC
+~~~~~~~~~~~~~~~~~
+Non discoverable scan mode.
+
+GAP_SCAN_GEN
+~~~~~~~~~~~~
+General scan mode.
+
+GAP_SCAN_LIM
+~~~~~~~~~~~~
+Limited scan mode.
+
+GAP_SCAN_ALL
+~~~~~~~~~~~~
+Scan for all devices mode.
+
+
+RETURN VALUE
+------------
+*gap_cmd_dev_disc ()* returns 0 for success, and an _errno_ like negative
+number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

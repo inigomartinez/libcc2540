@@ -6,6 +6,7 @@
 
 #include <endian.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
@@ -23,6 +24,8 @@ __extension__ ({ \
 })
 
 void gap_evt_dev_init_done (hci_evt_t *evt);
+void gap_evt_dev_disc      (hci_evt_t *evt);
+void gap_evt_dev_info      (hci_evt_t *evt);
 void gap_evt_cmd_status    (hci_evt_t *evt);
 
 static struct {
@@ -30,6 +33,8 @@ static struct {
     void     (*parser) (hci_evt_t *evt);
 } parsers[] = {
     {GAP_EVT_DEV_INIT_DONE, gap_evt_dev_init_done},
+    {GAP_EVT_DEV_DISC,      gap_evt_dev_disc},
+    {GAP_EVT_DEV_INFO,      gap_evt_dev_info},
     {GAP_EVT_CMD_STATUS,    gap_evt_cmd_status},
     {0}
 };
@@ -71,6 +76,23 @@ gap_cmd_dev_init (cc2540_t      *dev,
 
     return gap_cmd (dev,
                     GAP_CMD_DEV_INIT, GAP_CMD_T (&cmd), sizeof (cmd),
+                    &evt);
+}
+
+CC2540_EXPORT int
+gap_cmd_dev_disc (cc2540_t   *dev,
+                  gap_scan_t  mode,
+                  bool        active_scan,
+                  bool        white_list) {
+    gap_cmd_dev_disc_t cmd = {
+        .mode = mode,
+        .active_scan = active_scan,
+        .white_list = white_list
+    };
+    hci_evt_t evt;
+
+    return gap_cmd (dev,
+                    GAP_CMD_DEV_DISC, GAP_CMD_T (&cmd), sizeof (cmd),
                     &evt);
 }
 
@@ -161,6 +183,19 @@ gap_evt_dev_init_done (hci_evt_t *evt) {
 
     data->data_pkt_len = le16toh (data->data_pkt_len);
     __reverse (data->addr, BT_ADDR_LEN);
+}
+
+void
+gap_evt_dev_disc (hci_evt_t *evt) {
+    gap_evt_dev_disc_t *data = GAP_EVT_DEV_DISC_T (&(evt->evt));
+
+    for (uint8_t n = 0; n < data->num_devs; n++)
+        __reverse (data->dev[n].addr, BT_ADDR_LEN);
+}
+
+void
+gap_evt_dev_info (hci_evt_t *evt) {
+    __reverse (GAP_EVT_DEV_INFO_T (&(evt->evt))->addr, BT_ADDR_LEN);
 }
 
 void

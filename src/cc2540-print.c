@@ -12,6 +12,21 @@
 #include "cc2540-cmd.h"
 #include "cc2540-print.h"
 
+static const char *evt_type_str[] = {
+    [GAP_EVT_CONN_UNDIR]    = "Connectable undirected advertisement",
+    [GAP_EVT_CONN_DIR]      = "Connectable directed advertisement",
+    [GAP_EVT_DISC_UNDIR]    = "Discoverable undirected advertisement",
+    [GAP_EVT_NO_CONN_UNDIR] = "Non-connectable undirected advertisement",
+    [GAP_EVT_SCAN_RESP]     = "Scan-Response"
+};
+
+static const char *addr_type_str[] = {
+    [GAP_ADDR_PUBLIC]          = "Public",
+    [GAP_ADDR_STATIC]          = "Static",
+    [GAP_ADDR_PRIV_NON_RESOLV] = "Private non resolvable",
+    [GAP_ADDR_PRIV_RESOLV]     = "Private resolvable",
+};
+
 CC2540_EXPORT void
 print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
@@ -39,6 +54,41 @@ print_gap_evt_dev_init_done (const gap_evt_dev_init_done_t *evt) {
     for (uint8_t n = 1; n < BT_CSRK_LEN; n++)
         printf (":%02x", evt->csrk[n]);
     printf ("\n");
+}
+
+CC2540_EXPORT void
+print_gap_evt_dev_disc (const gap_evt_dev_disc_t *evt) {
+    printf ("GAP_DeviceDiscovery\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("num_devs: %u\n", evt->num_devs);
+    for (uint8_t i = 0; i < evt->num_devs; i++) {
+        printf ("evt_type: %s\n", evt_type_str[evt->dev[i].evt_type]);
+        printf ("addr_type: %s\n", addr_type_str[evt->dev[i].addr_type]);
+        printf ("addr: %02x", evt->dev[i].addr[0]);
+        for (uint8_t n = 1; n < BT_ADDR_LEN; n++)
+            printf (":%02x", evt->dev[i].addr[n]);
+        printf ("\n");
+    }
+}
+
+CC2540_EXPORT void
+print_gap_evt_dev_info (const gap_evt_dev_info_t *evt) {
+    printf ("GAP_DeviceInformation\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("evt_type: %s\n", evt_type_str[evt->evt_type]);
+    printf ("addr_type: %s\n", addr_type_str[evt->addr_type]);
+    printf ("addr: %02x", evt->addr[0]);
+    for (uint8_t n = 1; n < BT_ADDR_LEN; n++)
+        printf (":%02x", evt->addr[n]);
+    printf ("\n");
+    printf ("rssi: %d\n", evt->rssi);
+    printf ("data_len: %u\n", evt->data_len);
+    if (evt->data_len) {
+        printf ("data: %02x", evt->data[0]);
+        for (uint8_t n = 1; n < evt->data_len; ++n)
+            printf (":%02x", evt->data[n]);
+        printf ("\n");
+    }
 }
 
 CC2540_EXPORT void
