@@ -12,6 +12,13 @@
 #include "cc2540-cmd.h"
 #include "cc2540-print.h"
 
+static const char *hci_type_str[] = {
+    [HCI_TYPE_CMD]        = "Command",
+    [HCI_TYPE_ASYNC_DATA] = "Async data",
+    [HCI_TYPE_SYNC_DATA]  = "Sync data",
+    [HCI_TYPE_EVENT]      = "Event"
+};
+
 static const char *evt_type_str[] = {
     [GAP_EVT_CONN_UNDIR]    = "Connectable undirected advertisement",
     [GAP_EVT_CONN_DIR]      = "Connectable directed advertisement",
@@ -30,7 +37,7 @@ static const char *addr_type_str[] = {
 CC2540_EXPORT void
 print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
-    printf ("type: 0x%02x\n", evt->type);
+    printf ("type: %s\n", hci_type_str[evt->type]);
     printf ("evt_code: 0x%02x\n", evt->evt_code);
     printf ("data_len: 0x%02x\n", evt->data_len);
     printf ("op_code: 0x%04x\n", evt->op_code);
