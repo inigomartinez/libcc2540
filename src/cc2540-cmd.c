@@ -42,7 +42,7 @@ static struct {
 
 static inline int parse (hci_evt_t *evt) {
     for (uint8_t n = 0; parsers[n].evt_code; n++) {
-        if (parsers[n].evt_code == evt->evt_code) {
+        if (HCI_EVT_IS (*evt, parsers[n].evt_code)) {
             parsers[n].parser (evt);
             return 0;
         }
