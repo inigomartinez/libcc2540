@@ -16,6 +16,8 @@ global:
 	hci_cmd;
 	hci_evt;
 
+	hci_strerror;
+
 	print_hci_evt_info;
 	print_gap_evt_dev_init_done;
 	print_gap_evt_dev_disc;

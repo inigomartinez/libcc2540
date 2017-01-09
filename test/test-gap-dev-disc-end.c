@@ -12,6 +12,7 @@
 
 #include <cc2540.h>
 #include <cc2540-cmd.h>
+#include <cc2540-error.h>
 
 #include "test-common.h"
 
@@ -34,25 +35,45 @@ main (int argc, char **argv) {
     if ((r = test_dev_init (dev)) < 0)
         goto close_dev;
 
-    if ((r = test_dev_disc (dev)) < 0)
-        goto close_dev;
-
     do {
+        if ((r = test_dev_disc (dev)) < 0)
+            goto close_dev;
+
         if ((r = hci_evt (dev, &evt)) < 0) {
             fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
             goto close_dev;
         }
 
+        if (evt.evt.status) {
+            fprintf (stderr, "Error in hci_evt: %s\n", hci_strerror (evt.evt.status));
+            goto close_dev;
+        }
+
         assert (HCI_EVT_IS (evt, GAP_EVT_DEV_INFO) ||
                 HCI_EVT_IS (evt, GAP_EVT_DEV_DISC));
+    } while (HCI_EVT_IS (evt, GAP_EVT_DEV_DISC));
 
-        if (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC)) {
-            if ((r = gap_cmd_dev_disc_end (dev)) < 0) {
-                fprintf (stderr, "Error in gap_cmd_dev_disc_end: %s\n ", strerror (-r));
-                goto close_dev;
-            }
-        }
-    } while (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC));
+    if ((r = gap_cmd_dev_disc_end (dev)) < 0) {
+        fprintf (stderr, "Error in gap_cmd_dev_disc_end: %s\n ", strerror (-r));
+        goto close_dev;
+    }
+
+    if ((r = hci_evt (dev, &evt)) < 0) {
+        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
+        goto close_dev;
+    }
+
+    if (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC)) {
+        fprintf (stderr, "Error bad event: %04x\n", evt.evt_code);
+        r = EXIT_FAILURE;
+        goto close_dev;
+    }
+
+    if (evt.evt.status != HCI_ERROR_BLE_GAP_USER_CANCEL) {
+        fprintf (stderr, "Error bad status: %02x\n", evt.evt.status);
+        r = EXIT_FAILURE;
+        goto close_dev;
+    }
 
 close_dev:
     cc2540_close (dev);

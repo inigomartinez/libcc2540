@@ -12,6 +12,7 @@
 
 #include <cc2540.h>
 #include <cc2540-cmd.h>
+#include <cc2540-error.h>
 
 #include "test-common.h"
 
@@ -40,6 +41,12 @@ main (int argc, char **argv) {
     do {
         if ((r = hci_evt (dev, &evt)) < 0) {
             fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
+            goto close_dev;
+        }
+
+        if (evt.evt.status) {
+            fprintf (stderr, "Error in hci_evt: %s\n", hci_strerror (evt.evt.status));
+            r = EXIT_FAILURE;
             goto close_dev;
         }
 

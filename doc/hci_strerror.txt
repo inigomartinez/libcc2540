@@ -1,0 +1,35 @@
+hci_strerror(3)
+==============
+
+
+NAME
+----
+hci_strerror - returns the corresponding string
+
+
+SYNOPSIS
+--------
+*const char *hci_strerror (hci_error_t 'code');*
+
+
+DESCRIPTION
+-----------
+*hci_strerror ()* function returns a pointer to a string that describes the
+error code passed in the argument _code_.
+
+
+RETURN VALUE
+------------
+The appropriate error description string, or an "Unknown error" message if the
+error number is unknown.
+
+
+SEE ALSO
+--------
+linkmb:hci_evt[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

@@ -20,6 +20,7 @@ lib_LTLIBRARIES = libcc2540.la
 
 INST_H_FILES = \
 	cc2540-cmd.h \
+	cc2540-error.h \
 	cc2540-print.h \
 	cc2540.h
 

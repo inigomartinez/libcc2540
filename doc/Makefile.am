@@ -12,6 +12,7 @@ TXT3 = \
 	gap_cmd_param_get.txt \
 	hci_cmd.txt \
 	hci_evt.txt \
+	hci_strerror.txt \
 	print_hci_evt_info.txt \
 	print_gap_evt_dev_init_done.txt \
 	print_gap_evt_dev_disc.txt \
