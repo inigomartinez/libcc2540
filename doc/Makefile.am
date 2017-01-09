@@ -7,6 +7,7 @@ TXT3 = \
 	cc2540_set_timeout.txt \
 	gap_cmd_dev_init.txt \
 	gap_cmd_dev_disc.txt \
+	gap_cmd_dev_disc_end.txt \
 	gap_cmd_param_set.txt \
 	gap_cmd_param_get.txt \
 	hci_cmd.txt \

@@ -45,7 +45,15 @@ main (int argc, char **argv) {
 
         assert (HCI_EVT_IS (evt, GAP_EVT_DEV_INFO) ||
                 HCI_EVT_IS (evt, GAP_EVT_DEV_DISC));
+
+        if (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC)) {
+            if ((r = gap_cmd_dev_disc_end (dev)) < 0) {
+                fprintf (stderr, "Error in gap_cmd_dev_disc_end: %s\n ", strerror (-r));
+                goto close_dev;
+            }
+        }
     } while (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC));
+
 close_dev:
     cc2540_close (dev);
 

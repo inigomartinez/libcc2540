@@ -24,6 +24,7 @@ CC2540_BEGIN_DECLS
 
 #define GAP_CMD_DEV_INIT      0xFE00
 #define GAP_CMD_DEV_DISC      0xFE04
+#define GAP_CMD_DEV_DISC_END  0xFE05
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
 
@@ -220,28 +221,29 @@ typedef struct {
 
 #define HCI_EVT_IS(evt, code) ((evt).evt_code == code)
 
-int gap_cmd_dev_init  (cc2540_t        *dev,
-                       gap_profile_t    profile_role,
-                       uint8_t          max_scan_responses,
-                       const uint8_t    irk[BT_IRK_LEN],
-                       const uint8_t    csrk[BT_CSRK_LEN],
-                       uint32_t         sign_counter);
-int gap_cmd_dev_disc  (cc2540_t        *dev,
-                       gap_scan_t       mode,
-                       bool             active_scan,
-                       bool             white_list);
-int gap_cmd_param_set (cc2540_t        *dev,
-                       gap_param_t      param,
-                       uint16_t         value);
-int gap_cmd_param_get (cc2540_t        *dev,
-                       gap_param_t      param,
-                       uint16_t        *value);
+int gap_cmd_dev_init     (cc2540_t        *dev,
+                          gap_profile_t    profile_role,
+                          uint8_t          max_scan_responses,
+                          const uint8_t    irk[BT_IRK_LEN],
+                          const uint8_t    csrk[BT_CSRK_LEN],
+                          uint32_t         sign_counter);
+int gap_cmd_dev_disc     (cc2540_t        *dev,
+                          gap_scan_t       mode,
+                          bool             active_scan,
+                          bool             white_list);
+int gap_cmd_dev_disc_end (cc2540_t        *dev);
+int gap_cmd_param_set    (cc2540_t        *dev,
+                          gap_param_t      param,
+                          uint16_t         value);
+int gap_cmd_param_get    (cc2540_t        *dev,
+                          gap_param_t      param,
+                          uint16_t        *value);
 
-int hci_cmd           (cc2540_t        *dev,
-                       const hci_cmd_t *cmd,
-                       hci_evt_t       *evt);
-int hci_evt           (cc2540_t        *dev,
-                       hci_evt_t       *evt);
+int hci_cmd              (cc2540_t        *dev,
+                          const hci_cmd_t *cmd,
+                          hci_evt_t       *evt);
+int hci_evt              (cc2540_t        *dev,
+                          hci_evt_t       *evt);
 
 CC2540_END_DECLS
 

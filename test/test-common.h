@@ -10,5 +10,6 @@
 #include <cc2540.h>
 
 int test_dev_init (cc2540_t *dev);
+int test_dev_disc (cc2540_t *dev);
 
 #endif /* __TEST_COMMON_H__ */

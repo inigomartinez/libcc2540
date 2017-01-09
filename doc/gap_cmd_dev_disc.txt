@@ -47,6 +47,7 @@ SEE ALSO
 --------
 linkmb:gap_cmd_dev_init[3]
 linkmb:gap_cmd_param_get[3]
+linkmb:gap_cmd_dev_disc_end[3]
 
 
 AUTHORS

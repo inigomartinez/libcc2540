@@ -1,0 +1,35 @@
+gap_cmd_dev_disc_end(3)
+======================
+
+
+NAME
+----
+gap_cmd_dev_disc_end - sends the device discovery cancel command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_dev_disc_end (cc2540_t *'dev');*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_dev_disc_end ()* function sends the device discovery cancel command
+to the _dev_.
+
+
+RETURN VALUE
+------------
+*gap_cmd_dev_disc_end ()* returns 0 for success, and an _errno_ like negative
+number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_dev_disc[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

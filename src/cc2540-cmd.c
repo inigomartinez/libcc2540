@@ -92,6 +92,16 @@ gap_cmd_dev_disc (cc2540_t   *dev,
 }
 
 CC2540_EXPORT int
+gap_cmd_dev_disc_end (cc2540_t *dev) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DEV_DISC_END, 0)
+    };
+    hci_evt_t evt;
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_param_set (cc2540_t    *dev,
                    gap_param_t  param,
                    uint16_t     value) {

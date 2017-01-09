@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LGPL-3.0+
  */
 
+#include <sys/time.h>
 #include <assert.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -16,6 +18,10 @@
 
 #define MAX_TAGS          25
 #define INIT_SIGN_COUNTER 1
+
+#define MODE              GAP_SCAN_ALL
+#define ACTIVE_SCAN       false
+#define WHITE_LIST        false
 
 int
 test_dev_init (cc2540_t *dev) {
@@ -38,6 +44,25 @@ test_dev_init (cc2540_t *dev) {
     }
 
     assert (HCI_EVT_IS (evt, GAP_EVT_DEV_INIT_DONE));
+
+    return r;
+}
+
+int
+test_dev_disc (cc2540_t *dev) {
+    int r = 0;
+    uint16_t scan_time;
+
+    if ((r = gap_cmd_param_get (dev, TGAP_GEN_DISC_SCAN, &scan_time)) < 0) {
+        fprintf (stderr, "Error in gap_cmd_param_get: %s\n", strerror (-r));
+        return r;
+    }
+
+    if ((r = gap_cmd_dev_disc (dev, MODE, ACTIVE_SCAN, WHITE_LIST)) < 0) {
+        fprintf (stderr, "Error in gap_cmd_dev_disc: %s\n ", strerror (-r));
+        return r;
+    }
+    cc2540_set_timeout (dev, (scan_time + 1000));
 
     return r;
 }
