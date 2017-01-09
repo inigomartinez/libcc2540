@@ -8,6 +8,7 @@ global:
 	cc2540_set_timeout;
 
 	gap_cmd_dev_init;
+	gap_cmd_dev_addr_set;
 	gap_cmd_dev_disc;
 	gap_cmd_dev_disc_end;
 	gap_cmd_param_set;

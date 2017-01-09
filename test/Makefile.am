@@ -16,11 +16,13 @@ TEST_COMMON = \
 noinst_PROGRAMS = \
 	test-cc2540 \
 	test-gap-dev-init \
+	test-gap-dev-addr-set \
 	test-gap-dev-disc \
 	test-gap-dev-disc-end \
 	test-gap-param-set \
 	test-gap-param-get
 
 test_gap_dev_init_SOURCES = ${TEST_COMMON} test-gap-dev-init.c
+test_gap_dev_addr_set_SOURCES = ${TEST_COMMON} test-gap-dev-addr-set.c
 test_gap_dev_disc_SOURCES = ${TEST_COMMON} test-gap-dev-disc.c
 test_gap_dev_disc_end_SOURCES = ${TEST_COMMON} test-gap-dev-disc-end.c

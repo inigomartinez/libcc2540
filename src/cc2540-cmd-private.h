@@ -30,6 +30,12 @@ CC2540_BEGIN_DECLS
         htole32 (sign_counter) \
     }
 
+#define HCI_CMD_DEV_ADDR_SET(addr_type) \
+    .cmd.dev_addr_set = { \
+        (addr_type), \
+        {0}, \
+    }
+
 #define HCI_CMD_DEV_DISC(mode, active_scan, white_list) \
     .cmd.dev_disc = { \
         (mode), \

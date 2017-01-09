@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2017 Iñigo Martínez <inigomartinez@gmail.com>
  *
- * SPDX-License-Identifier: LGPL-3.0+
+  SPDX-License-Identifier: LGPL-3.0+
  */
 
 #ifndef __CC2540_CMD_H__
@@ -23,6 +23,7 @@ CC2540_BEGIN_DECLS
 #define HCI_EVT_MAX_LEN UINT8_MAX
 
 #define GAP_CMD_DEV_INIT      0xFE00
+#define GAP_CMD_DEV_ADDR_SET  0xFE03
 #define GAP_CMD_DEV_DISC      0xFE04
 #define GAP_CMD_DEV_DISC_END  0xFE05
 #define GAP_CMD_PARAM_SET     0xFE30
@@ -141,6 +142,11 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_dev_init_t;
 
 typedef struct {
+    gap_addr_t addr_type;
+    uint8_t    addr[BT_ADDR_LEN];
+} __attribute__((packed)) gap_cmd_dev_addr_set_t;
+
+typedef struct {
     gap_scan_t mode;
     bool       active_scan;
     bool       white_list;
@@ -156,10 +162,11 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_param_get_t;
 
 typedef union {
-    gap_cmd_dev_init_t  dev_init;
-    gap_cmd_dev_disc_t  dev_disc;
-    gap_cmd_param_set_t param_set;
-    gap_cmd_param_get_t param_get;
+    gap_cmd_dev_init_t     dev_init;
+    gap_cmd_dev_addr_set_t dev_addr_set;
+    gap_cmd_dev_disc_t     dev_disc;
+    gap_cmd_param_set_t    param_set;
+    gap_cmd_param_get_t    param_get;
 } __attribute__((packed)) gap_cmd_t;
 
 typedef struct {
@@ -227,6 +234,9 @@ int gap_cmd_dev_init     (cc2540_t        *dev,
                           const uint8_t    irk[BT_IRK_LEN],
                           const uint8_t    csrk[BT_CSRK_LEN],
                           uint32_t         sign_counter);
+int gap_cmd_dev_addr_set (cc2540_t        *dev,
+                          gap_addr_t       type,
+                          const uint8_t    addr[BT_ADDR_LEN]);
 int gap_cmd_dev_disc     (cc2540_t        *dev,
                           gap_scan_t       mode,
                           bool             active_scan,

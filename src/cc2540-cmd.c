@@ -78,6 +78,22 @@ gap_cmd_dev_init (cc2540_t      *dev,
 }
 
 CC2540_EXPORT int
+gap_cmd_dev_addr_set (cc2540_t      *dev,
+                      gap_addr_t     addr_type,
+                      const uint8_t  addr[BT_ADDR_LEN]) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DEV_ADDR_SET, sizeof (gap_cmd_dev_addr_set_t)),
+        HCI_CMD_DEV_ADDR_SET (addr_type)
+    };
+    hci_evt_t evt;
+
+    memcpy (hci.cmd.dev_addr_set.addr, addr, BT_ADDR_LEN);
+    __reverse (hci.cmd.dev_addr_set.addr, BT_ADDR_LEN);
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_dev_disc (cc2540_t   *dev,
                   gap_scan_t  mode,
                   bool        active_scan,
