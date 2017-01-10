@@ -64,8 +64,34 @@ struct {
 };
 
 int
-test_dev_init (cc2540_t *dev) {
+test_get_check (cc2540_t  *dev,
+                hci_evt_t *evt,
+                uint16_t   code,
+                uint8_t    status) {
     int r = 0;
+
+    if ((r = hci_evt (dev, evt)) < 0) {
+        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
+        return r;
+    }
+
+    if (!HCI_EVT_IS (*evt, code)) {
+        fprintf (stderr, "Error bad event code: %04x\n", evt->evt_code);
+        return EXIT_FAILURE;
+    }
+
+    if (evt->evt.status != status) {
+        fprintf (stderr, "Error bad status (%02x): %s\n", evt->evt.status,
+                                                          hci_strerror (evt->evt.status));
+        return EXIT_FAILURE;
+    }
+
+    return r;
+}
+
+int
+test_dev_init (cc2540_t *dev) {
+    int r;
     hci_evt_t evt;
 
     if ((r = gap_cmd_dev_init (dev,
@@ -78,14 +104,7 @@ test_dev_init (cc2540_t *dev) {
         return r;
     }
 
-    if ((r = hci_evt (dev, &evt) < 0)) {
-        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
-        return r;
-    }
-
-    assert (HCI_EVT_IS (evt, GAP_EVT_DEV_INIT_DONE));
-
-    return r;
+    return test_get_check (dev, &evt, GAP_EVT_DEV_INIT_DONE, 0);
 }
 
 int
@@ -117,17 +136,5 @@ test_adv (cc2540_t *dev) {
         return r;
     }
 
-    if ((r = hci_evt (dev, &evt)) < 0) {
-        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
-        return r;
-    }
-
-    assert (HCI_EVT_IS (evt, GAP_EVT_ADV_SET_DONE));
-
-    if (evt.evt.status) {
-        fprintf (stderr, "Error in hci_evt: %s\n", hci_strerror (evt.evt.status));
-        r = EXIT_FAILURE;
-    }
-
-    return r;
+    return test_get_check (dev, &evt, GAP_EVT_ADV_SET_DONE, 0);
 }

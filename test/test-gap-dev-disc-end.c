@@ -58,23 +58,9 @@ main (int argc, char **argv) {
         goto close_dev;
     }
 
-    if ((r = hci_evt (dev, &evt)) < 0) {
-        fprintf (stderr, "Error in hci_evt: %s\n", strerror (-r));
-        goto close_dev;
-    }
-
-    if (!HCI_EVT_IS (evt, GAP_EVT_DEV_DISC)) {
-        fprintf (stderr, "Error bad event: %04x\n", evt.evt_code);
-        r = EXIT_FAILURE;
-        goto close_dev;
-    }
-
-    if (evt.evt.status != HCI_ERROR_BLE_GAP_USER_CANCEL) {
-        fprintf (stderr, "Error bad status: %02x\n", evt.evt.status);
-        r = EXIT_FAILURE;
-        goto close_dev;
-    }
-
+    r = test_get_check (dev, &evt,
+                        GAP_EVT_DEV_DISC,
+                        HCI_ERROR_BLE_GAP_USER_CANCEL);
 close_dev:
     cc2540_close (dev);
 

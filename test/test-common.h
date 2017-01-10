@@ -7,10 +7,18 @@
 #ifndef __TEST_COMMON_H__
 #define __TEST_COMMON_H__
 
-#include <cc2540.h>
+#include <stdint.h>
 
-int test_dev_init (cc2540_t *dev);
-int test_dev_disc (cc2540_t *dev);
-int test_adv      (cc2540_t *dev);
+#include <cc2540.h>
+#include <cc2540-cmd.h>
+
+int test_get_check    (cc2540_t  *dev,
+                       hci_evt_t *evt,
+                       uint16_t   code,
+                       uint8_t    status);
+
+int test_dev_init     (cc2540_t  *dev);
+int test_dev_disc     (cc2540_t  *dev);
+int test_adv          (cc2540_t  *dev);
 
 #endif /* __TEST_COMMON_H__ */
