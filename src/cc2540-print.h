@@ -14,8 +14,9 @@ CC2540_BEGIN_DECLS
 
 void print_hci_evt_info          (const hci_evt_info_t          *evt);
 void print_gap_evt_dev_init_done (const gap_evt_dev_init_done_t *evt);
-void print_gap_evt_adv_set_done  (const gap_evt_adv_set_done_t  *evt);
 void print_gap_evt_dev_disc      (const gap_evt_dev_disc_t      *evt);
+void print_gap_evt_adv_set_done  (const gap_evt_adv_set_done_t  *evt);
+void print_gap_evt_disc_set_done (const gap_evt_disc_set_done_t *evt);
 void print_gap_evt_dev_info      (const gap_evt_dev_info_t      *evt);
 void print_gap_evt_cmd_status    (const gap_evt_cmd_status_t    *evt);
 

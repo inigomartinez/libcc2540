@@ -26,13 +26,17 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_DEV_ADDR_SET  0xFE03
 #define GAP_CMD_DEV_DISC      0xFE04
 #define GAP_CMD_DEV_DISC_END  0xFE05
+#define GAP_CMD_DISC_SET      0xFE06
 #define GAP_CMD_ADV_SET       0xFE07
+#define GAP_CMD_DISC_END      0xFE08
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
 
 #define GAP_EVT_DEV_INIT_DONE 0x0600
 #define GAP_EVT_DEV_DISC      0x0601
 #define GAP_EVT_ADV_SET_DONE  0x0602
+#define GAP_EVT_DISC_SET_DONE 0x0603
+#define GAP_EVT_DISC_END      0x0604
 #define GAP_EVT_DEV_INFO      0x060D
 #define GAP_EVT_CMD_STATUS    0x067F
 
@@ -75,6 +79,19 @@ typedef enum {
     GAP_ADDR_PRIV_NON_RESOLV,
     GAP_ADDR_PRIV_RESOLV
 } __attribute__((packed)) gap_addr_t;
+
+typedef enum {
+    GAP_CHANNEL_37 = (1 << 0),
+    GAP_CHANNEL_38 = (1 << 1),
+    GAP_CHANNEL_39 = (1 << 2)
+} __attribute__((packed)) gap_channel_t;
+
+typedef enum {
+    GAP_FILTER_SCAN_ALL_CONN_ALL,
+    GAP_FILTER_SCAN_LIST_CONN_ALL,
+    GAP_FILTER_SCAN_ALL_CONN_LIST,
+    GAP_FILTER_SCAN_LIST_CONN_LIST
+} __attribute__((packed)) gap_filter_t;
 
 typedef enum {
     GAP_ADV_SCAN_RSP,
@@ -151,6 +168,14 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_dev_init_t;
 
 typedef struct {
+    gap_evt_t     evt_type;
+    gap_addr_t    init_addr_type;
+    uint8_t       init_addr[BT_ADDR_LEN];
+    gap_channel_t channel_map;
+    gap_filter_t  filter_policy;
+} __attribute__((packed)) gap_cmd_disc_set_t;
+
+typedef struct {
     gap_addr_t addr_type;
     uint8_t    addr[BT_ADDR_LEN];
 } __attribute__((packed)) gap_cmd_dev_addr_set_t;
@@ -180,6 +205,7 @@ typedef union {
     gap_cmd_dev_init_t     dev_init;
     gap_cmd_dev_addr_set_t dev_addr_set;
     gap_cmd_dev_disc_t     dev_disc;
+    gap_cmd_disc_set_t     disc_set;
     gap_cmd_adv_set_t      adv_set;
     gap_cmd_param_set_t    param_set;
     gap_cmd_param_get_t    param_get;
@@ -207,6 +233,13 @@ typedef struct {
 } __attribute__((packed)) gap_evt_adv_set_done_t;
 
 #define GAP_EVT_ADV_SET_DONE_T(o) ((gap_evt_adv_set_done_t *) o)
+
+typedef struct {
+    uint8_t  status;
+    uint16_t interval;
+} __attribute__((packed)) gap_evt_disc_set_done_t;
+
+#define GAP_EVT_DISC_SET_DONE_T(o) ((gap_evt_disc_set_done_t *) o)
 
 typedef struct {
     uint8_t status;
@@ -265,10 +298,17 @@ int gap_cmd_dev_disc     (cc2540_t        *dev,
                           bool             active_scan,
                           bool             white_list);
 int gap_cmd_dev_disc_end (cc2540_t        *dev);
+int gap_cmd_disc_set     (cc2540_t        *dev,
+                          gap_evt_t        evt_type,
+                          gap_addr_t       init_addr_type,
+                          const uint8_t    init_addr[BT_ADDR_LEN],
+                          gap_channel_t    channel_map,
+                          gap_filter_t     filter_policy);
 int gap_cmd_adv_set      (cc2540_t        *dev,
                           gap_adv_t        adv_type,
                           uint8_t          data_len,
                           const uint8_t    data[]);
+int gap_cmd_disc_end     (cc2540_t        *dev);
 int gap_cmd_param_set    (cc2540_t        *dev,
                           gap_param_t      param,
                           uint16_t         value);

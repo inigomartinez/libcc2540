@@ -1,0 +1,35 @@
+print_gap_evt_disc_set_done(3)
+=============================
+
+
+NAME
+----
+print_gap_evt_disc_set_done - prints a gap_evt_disc_set_done event
+
+
+SYNOPSIS
+--------
+*void print_gap_evt_disc_set_done (const gap_evt_disc_set_done_t *'evt');*
+
+
+DESCRIPTION
+-----------
+The *print_gap_evt_disc_set_done ()* function prints the
+_gap_evt_disc_set_done_t_ _evt_ structure.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_disc_set[3]
+linkmb:gap_cmd_disc_end[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

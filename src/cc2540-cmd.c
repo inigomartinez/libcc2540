@@ -26,6 +26,7 @@ __extension__ ({ \
 
 void gap_evt_dev_init_done (hci_evt_t *evt);
 void gap_evt_dev_disc      (hci_evt_t *evt);
+void gap_evt_disc_set_done (hci_evt_t *evt);
 void gap_evt_dev_info      (hci_evt_t *evt);
 void gap_evt_cmd_status    (hci_evt_t *evt);
 
@@ -34,8 +35,10 @@ static struct {
     void     (*parser) (hci_evt_t *evt);
 } parsers[] = {
     {GAP_EVT_DEV_INIT_DONE, gap_evt_dev_init_done},
-    {GAP_EVT_ADV_SET_DONE,  NULL},
     {GAP_EVT_DEV_DISC,      gap_evt_dev_disc},
+    {GAP_EVT_ADV_SET_DONE,  NULL},
+    {GAP_EVT_DISC_SET_DONE, gap_evt_disc_set_done},
+    {GAP_EVT_DISC_END,      NULL},
     {GAP_EVT_DEV_INFO,      gap_evt_dev_info},
     {GAP_EVT_CMD_STATUS,    gap_evt_cmd_status},
     {0}
@@ -120,6 +123,24 @@ gap_cmd_dev_disc_end (cc2540_t *dev) {
 }
 
 CC2540_EXPORT int
+gap_cmd_disc_set (cc2540_t      *dev,
+                  gap_evt_t      evt_type,
+                  gap_addr_t     init_addr_type,
+                  const uint8_t  init_addr[BT_ADDR_LEN],
+                  gap_channel_t  channel_map,
+                  gap_filter_t   filter_policy) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DISC_SET, sizeof (gap_cmd_disc_set_t)),
+        HCI_CMD_DISC_SET (evt_type, init_addr_type, channel_map, filter_policy)
+    };
+    hci_evt_t evt;
+
+    memcpy (hci.cmd.disc_set.init_addr, init_addr, BT_ADDR_LEN);
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_adv_set (cc2540_t      *dev,
                  gap_adv_t      adv_type,
                  uint8_t        data_len,
@@ -132,6 +153,16 @@ gap_cmd_adv_set (cc2540_t      *dev,
     hci_evt_t evt;
 
     memcpy (hci.cmd.adv_set.data, data, len);
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
+gap_cmd_disc_end (cc2540_t *dev) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_DISC_END, 0)
+    };
+    hci_evt_t evt;
 
     return hci_cmd (dev, &hci, &evt);
 }
@@ -217,6 +248,13 @@ gap_evt_dev_disc (hci_evt_t *evt) {
 
     for (uint8_t n = 0; n < data->num_devs; n++)
         __reverse (data->dev[n].addr, BT_ADDR_LEN);
+}
+
+void
+gap_evt_disc_set_done (hci_evt_t *evt) {
+    gap_evt_disc_set_done_t *data = GAP_EVT_DISC_SET_DONE_T (&(evt->evt));
+
+    data->interval = le16toh (data->interval);
 }
 
 void

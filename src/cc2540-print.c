@@ -91,6 +91,13 @@ print_gap_evt_dev_disc (const gap_evt_dev_disc_t *evt) {
 }
 
 CC2540_EXPORT void
+print_gap_evt_disc_set_done (const gap_evt_disc_set_done_t *evt) {
+    printf ("GAP_MakeDiscoverableDone\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("interval: %u\n", evt->interval);
+}
+
+CC2540_EXPORT void
 print_gap_evt_dev_info (const gap_evt_dev_info_t *evt) {
     printf ("GAP_DeviceInformation\n");
     printf ("status: 0x%02x\n", evt->status);

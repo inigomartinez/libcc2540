@@ -43,6 +43,15 @@ CC2540_BEGIN_DECLS
         (white_list) \
     }
 
+#define HCI_CMD_DISC_SET(evt_type, init_addr_type, channel_map, filter_policy) \
+    .cmd.disc_set = { \
+        (evt_type), \
+        (init_addr_type), \
+        {0}, \
+        (channel_map), \
+        (filter_policy) \
+    }
+
 #define HCI_CMD_ADV_SET(adv_type, data_len) \
     .cmd.adv_set = { \
         (adv_type), \
