@@ -77,25 +77,26 @@ test_get_check (cc2540_t  *dev,
 
     if (!HCI_EVT_IS (*evt, code)) {
         fprintf (stderr, "Error bad event code: %04x\n", evt->evt_code);
-        return EXIT_FAILURE;
+        return -1;
     }
 
     if (evt->evt.status != status) {
         fprintf (stderr, "Error bad status (%02x): %s\n", evt->evt.status,
                                                           hci_strerror (evt->evt.status));
-        return EXIT_FAILURE;
+        return -1;
     }
 
     return r;
 }
 
 int
-test_dev_init (cc2540_t *dev) {
+test_dev_init (cc2540_t      *dev,
+               gap_profile_t  profile) {
     int r;
     hci_evt_t evt;
 
     if ((r = gap_cmd_dev_init (dev,
-                               GAP_PROFILE_OBSERVER | GAP_PROFILE_BROADCASTER,
+                               profile,
                                MAX_TAGS,
                                (uint8_t[BT_IRK_LEN]) {0},
                                (uint8_t[BT_CSRK_LEN]) {0},

@@ -29,6 +29,8 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_DISC_SET      0xFE06
 #define GAP_CMD_ADV_SET       0xFE07
 #define GAP_CMD_DISC_END      0xFE08
+#define GAP_CMD_LINK_SET      0xFE09
+#define GAP_CMD_LINK_END      0xFE0A
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
 
@@ -37,12 +39,18 @@ CC2540_BEGIN_DECLS
 #define GAP_EVT_ADV_SET_DONE  0x0602
 #define GAP_EVT_DISC_SET_DONE 0x0603
 #define GAP_EVT_DISC_END      0x0604
+#define GAP_EVT_LINK_SET      0x0605
+#define GAP_EVT_LINK_END      0x0606
+#define GAP_EVT_LINK_UPDATE   0x0607
 #define GAP_EVT_DEV_INFO      0x060D
 #define GAP_EVT_CMD_STATUS    0x067F
 
 #define GAP_ADV_MAX_LEN        0x20
 
 #define GAP_MAX_SCAN_RESPONSES 0xFF
+
+#define GAP_HANDLE_LINK 0xFFFE
+#define GAP_HANDLE_ALL  0xFFFF
 
 typedef enum {
     HCI_TYPE_CMD        = 0x01,
@@ -97,6 +105,32 @@ typedef enum {
     GAP_ADV_SCAN_RSP,
     GAP_ADV_RAW
 } __attribute__((packed)) gap_adv_t;
+
+typedef enum {
+    GAP_CLOCK_500,
+    GAP_CLOCK_250,
+    GAP_CLOCK_150,
+    GAP_CLOCK_100,
+    GAP_CLOCK_75,
+    GAP_CLOCK_50,
+    GAP_CLOCK_30,
+    GAP_CLOCK_20
+} __attribute__((packed)) gap_clock_t;
+
+typedef enum {
+    GAP_REASON_AUTH_FAIL                  = 0x05,
+    GAP_REASON_TIMEOUT                    = 0x08,
+    GAP_REASON_PEER                       = 0x13,
+    GAP_REASON_PEER_LOW_RES               = 0x14,
+    GAP_REASON_PEER_POWER_OFF             = 0x15,
+    GAP_REASON_HOST                       = 0x16,
+    GAP_REASON_PEER_NO_FEATURE            = 0x1A,
+    GAP_REASON_CTRL_PACKET_TIMEOUT        = 0x22,
+    GAP_REASON_CTRL_PACKET_INSTANT_PASSED = 0x28,
+    GAP_REASON_UNIT_KEY_NOT_SUPPORTED     = 0x29,
+    GAP_REASON_BAD_CONN_INTERVAL          = 0x3B,
+    GAP_REASON_MIC_FAIL                   = 0x3D
+} __attribute__((packed)) gap_reason_t;
 
 typedef enum {
     TGAP_GEN_DISC_ADV_MIN,
@@ -193,6 +227,18 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_adv_set_t;
 
 typedef struct {
+    bool       high_duty;
+    bool       white_list;
+    gap_addr_t addr_type;
+    uint8_t    addr[BT_ADDR_LEN];
+} __attribute__((packed)) gap_cmd_link_set_t;
+
+typedef struct {
+    uint16_t     handle;
+    gap_reason_t reason;
+} __attribute__((packed)) gap_cmd_link_end_t;
+
+typedef struct {
     gap_param_t param;
     uint16_t    value;
 } __attribute__((packed)) gap_cmd_param_set_t;
@@ -207,6 +253,8 @@ typedef union {
     gap_cmd_dev_disc_t     dev_disc;
     gap_cmd_disc_set_t     disc_set;
     gap_cmd_adv_set_t      adv_set;
+    gap_cmd_link_set_t     link_set;
+    gap_cmd_link_end_t     link_end;
     gap_cmd_param_set_t    param_set;
     gap_cmd_param_get_t    param_get;
 } __attribute__((packed)) gap_cmd_t;
@@ -252,6 +300,41 @@ typedef struct {
 } __attribute__((packed)) gap_evt_dev_disc_t;
 
 #define GAP_EVT_DEV_DISC_T(o) ((gap_evt_dev_disc_t *) o)
+
+typedef struct {
+    uint8_t       status;
+    gap_addr_t    addr_type;
+    uint8_t       addr[BT_ADDR_LEN];
+    uint16_t      handle;
+    gap_profile_t role;
+    uint16_t      interval;
+    uint16_t      latency;
+    uint16_t      timeout;
+    gap_clock_t   clock_accuracy;
+} __attribute__((packed)) gap_evt_link_set_t;
+
+#define GAP_EVT_LINK_SET_T(o) ((gap_evt_link_set_t *) o)
+
+typedef struct {
+    uint8_t      status;
+    uint16_t     handle;
+    gap_reason_t reason;
+} __attribute__((packed)) gap_evt_link_end_t;
+
+#define GAP_EVT_LINK_END_T(o) ((gap_evt_link_end_t *) o)
+
+typedef struct {
+    uint8_t  status;
+    uint16_t handle;
+    uint16_t interval;
+    uint16_t latency;
+    uint16_t timeout;
+} __attribute__((packed)) gap_evt_link_update_t;
+
+#define GAP_EVT_LINK_UPDATE_T(o) ((gap_evt_link_update_t *) o)
+
+#define GAP_EVT_LINK_INTERVAL(o) ((o).interval * 1.25f)
+#define GAP_EVT_LINK_TIMEOUT(o)  ((o).timeout * 10)
 
 typedef struct {
     uint8_t    status;
@@ -309,6 +392,14 @@ int gap_cmd_adv_set      (cc2540_t        *dev,
                           uint8_t          data_len,
                           const uint8_t    data[]);
 int gap_cmd_disc_end     (cc2540_t        *dev);
+int gap_cmd_link_set     (cc2540_t        *dev,
+                          bool             high_duty,
+                          bool             white_list,
+                          gap_addr_t       addr_type,
+                          const uint8_t    addr[BT_ADDR_LEN]);
+int gap_cmd_link_end     (cc2540_t        *dev,
+                          uint16_t         handle,
+                          gap_reason_t     reason);
 int gap_cmd_param_set    (cc2540_t        *dev,
                           gap_param_t      param,
                           uint16_t         value);

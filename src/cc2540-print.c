@@ -39,6 +39,32 @@ static const char *addr_type_str[] = {
     [GAP_ADDR_PRIV_RESOLV]     = "Private resolvable",
 };
 
+static const char *clock_str[] = {
+    [GAP_CLOCK_500] = "500 ppm",
+    [GAP_CLOCK_250] = "250 ppm",
+    [GAP_CLOCK_150] = "150 ppm",
+    [GAP_CLOCK_100] = "100 ppm",
+    [GAP_CLOCK_75]  = "75 ppm",
+    [GAP_CLOCK_50]  = "50 ppm",
+    [GAP_CLOCK_30]  = "30 ppm",
+    [GAP_CLOCK_20]  = "20 ppm"
+};
+
+static const char *reason_str[] = {
+    [GAP_REASON_AUTH_FAIL]                  = "Authentication failure",
+    [GAP_REASON_TIMEOUT]                    = "Timeout",
+    [GAP_REASON_PEER]                       = "Peer disconnected",
+    [GAP_REASON_PEER_LOW_RES]               = "Peer disconnected on low resources",
+    [GAP_REASON_PEER_POWER_OFF]             = "Peer disconnected on power off",
+    [GAP_REASON_HOST]                       = "Host disconnected",
+    [GAP_REASON_PEER_NO_FEATURE]            = "Peer unsupported feature",
+    [GAP_REASON_CTRL_PACKET_TIMEOUT]        = "Control packet timeout",
+    [GAP_REASON_CTRL_PACKET_INSTANT_PASSED] = "Control packet instant passed",
+    [GAP_REASON_UNIT_KEY_NOT_SUPPORTED]     = "Unit key not supported",
+    [GAP_REASON_BAD_CONN_INTERVAL]          = "Bad connection interval",
+    [GAP_REASON_MIC_FAIL]                   = "MIC failure"
+};
+
 CC2540_EXPORT void
 print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
@@ -95,6 +121,50 @@ print_gap_evt_disc_set_done (const gap_evt_disc_set_done_t *evt) {
     printf ("GAP_MakeDiscoverableDone\n");
     printf ("status: 0x%02x\n", evt->status);
     printf ("interval: %u\n", evt->interval);
+}
+
+CC2540_EXPORT void
+print_gap_evt_link_set (const gap_evt_link_set_t *evt) {
+    printf ("GAP_LinkEstablished\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("addr_type: %s\n", addr_type_str[evt->addr_type]);
+    printf ("addr: %02x", evt->addr[0]);
+    for (uint8_t n = 1; n < BT_ADDR_LEN; n++)
+        printf (":%02x", evt->addr[n]);
+    printf ("\n");
+    printf ("handle: %04x\n", evt->handle);
+    printf ("role: ");
+    if (evt->role & GAP_PROFILE_BROADCASTER)
+        printf ("|GAP_PROFILE_BROADCASTER|");
+    if (evt->role & GAP_PROFILE_OBSERVER)
+        printf ("|GAP_PROFILE_OBSERVER|");
+    if (evt->role & GAP_PROFILE_PERIPHERAL)
+        printf ("|GAP_PROFILE_PERIPHERAL|");
+    if (evt->role & GAP_PROFILE_CENTRAL)
+        printf ("|GAP_PROFILE_CENTRAL|");
+    printf ("\n");
+    printf ("interval: %f msec\n", GAP_EVT_LINK_INTERVAL (*evt));
+    printf ("latency: %04x\n", evt->latency);
+    printf ("timeout: %u msec\n", GAP_EVT_LINK_TIMEOUT (*evt));
+    printf ("clock_accuracy: %s\n", clock_str[evt->clock_accuracy]);
+}
+
+CC2540_EXPORT void
+print_gap_evt_link_end (const gap_evt_link_end_t *evt) {
+    printf ("GAP_LinkTerminated\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("handle: %04x\n", evt->handle);
+    printf ("reason: %s\n", reason_str[evt->reason]);
+}
+
+CC2540_EXPORT void
+print_gap_evt_link_update (const gap_evt_link_update_t *evt) {
+    printf ("GAP_LinkParamUpdate\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("handle: %04x\n", evt->handle);
+    printf ("interval: %f msec\n", GAP_EVT_LINK_INTERVAL (*evt));
+    printf ("latency: %04x\n", evt->latency);
+    printf ("timeout: %u msec\n", GAP_EVT_LINK_TIMEOUT (*evt));
 }
 
 CC2540_EXPORT void

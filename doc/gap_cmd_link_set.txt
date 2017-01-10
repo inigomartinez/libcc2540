@@ -1,0 +1,56 @@
+gap_cmd_link_set(3)
+==================
+
+
+NAME
+----
+gap_cmd_link_set - sends the establish link request command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_link_set (cc2540_t *'dev', bool 'high_duty', bool 'white_list', gap_addr_t 'addr_type', const uint8_t 'addr'[BT_ADDR_LEN]);*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_link_set ()* function sends the establish link request command to
+the _dev_ device, by using high duty cycle if enabled by _high_duty_, and
+depending on _white_list_ allowing only connections from the white list.
+
+The list of available address types is as follows:
+
+GAP_ADDR_PUBLIC
+~~~~~~~~~~~~~~~
+Public address type.
+
+GAP_ADDR_STATIC
+~~~~~~~~~~~~~~~
+Static address type.
+
+GAP_ADDR_PRIV_NON_RESOLV
+~~~~~~~~~~~~~~~~~~~~~~~~
+Non resolvable private address type.
+
+GAP_ADDR_PRIV_RESOLV
+~~~~~~~~~~~~~~~~~~~~
+Resolvable private address type.
+
+
+RETURN VALUE
+------------
+*gap_cmd_link_set ()* returns 0 for success, and an _errno_ like
+negative number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_end[3]
+linkmb:print_gap_evt_link_set[3]
+linkmb:print_gap_evt_link_update[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

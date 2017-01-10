@@ -32,7 +32,7 @@ main (int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    if ((r = test_dev_init (dev)) < 0)
+    if ((r = test_dev_init (dev, GAP_PROFILE_OBSERVER)) < 0)
         goto close_dev;
 
     do {

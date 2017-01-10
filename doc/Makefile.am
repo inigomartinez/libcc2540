@@ -12,6 +12,8 @@ TXT3 = \
 	gap_cmd_disc_set.txt \
 	gap_cmd_adv_set.txt \
 	gap_cmd_disc_end.txt \
+	gap_cmd_link_set.txt \
+	gap_cmd_link_end.txt \
 	gap_cmd_param_set.txt \
 	gap_cmd_param_get.txt \
 	hci_cmd.txt \
@@ -22,6 +24,9 @@ TXT3 = \
 	print_gap_evt_adv_set_done.txt \
 	print_gap_evt_disc_set_done.txt \
 	print_gap_evt_dev_disc.txt \
+	print_gap_evt_link_set.txt \
+	print_gap_evt_link_end.txt \
+	print_gap_evt_link_update.txt \
 	print_gap_evt_dev_info.txt \
 	print_gap_evt_cmd_status.txt
 

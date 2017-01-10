@@ -28,7 +28,7 @@ main (int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    r = test_dev_init (dev);
+    r = test_dev_init (dev, GAP_PROFILE_OBSERVER);
 
     cc2540_close (dev);
 

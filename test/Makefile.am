@@ -21,6 +21,7 @@ noinst_PROGRAMS = \
 	test-gap-dev-disc-end \
 	test-gap-disc-set \
 	test-gap-adv-set \
+	test-gap-link-set \
 	test-gap-param-set \
 	test-gap-param-get
 
@@ -30,3 +31,4 @@ test_gap_dev_disc_SOURCES = ${TEST_COMMON} test-gap-dev-disc.c
 test_gap_dev_disc_end_SOURCES = ${TEST_COMMON} test-gap-dev-disc-end.c
 test_gap_disc_set_SOURCES = ${TEST_COMMON} test-gap-disc-set.c
 test_gap_adv_set_SOURCES = ${TEST_COMMON} test-gap-adv-set.c
+test_gap_link_set_SOURCES = ${TEST_COMMON} test-gap-link-set.c

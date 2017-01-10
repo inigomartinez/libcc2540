@@ -31,7 +31,7 @@ main (int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    if ((r = test_dev_init (dev)) < 0)
+    if ((r = test_dev_init (dev, GAP_PROFILE_BROADCASTER)) < 0)
         goto close_dev;
 
     if ((r = gap_cmd_param_get (dev, TGAP_GEN_DISC_ADV_INT_MAX, &adv_time)) < 0) {
@@ -55,6 +55,7 @@ main (int argc, char **argv) {
 
     if ((r = test_get_check (dev, &evt, GAP_EVT_DISC_SET_DONE, 0)) < 0)
         goto close_dev;
+
     if ((r = gap_cmd_disc_end (dev)) < 0) {
         fprintf (stderr, "Error in gap_cmd_disc_end: %s\n", strerror (-r));
         goto close_dev;

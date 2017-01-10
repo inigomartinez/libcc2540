@@ -1,0 +1,87 @@
+gap_cmd_link_end(3)
+==================
+
+
+NAME
+----
+gap_cmd_link_end - sends the terminate link request command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_link_end (cc2540_t *'dev', uint16_t 'handle', gap_reason_t 'reason');*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_link_end ()* function sends the terminate link request command to
+the _dev_ device, for ending the connection with _handle_ with the given
+_reason_.
+
+The list of available reason types is as follows:
+
+GAP_REASON_AUTH_FAIL
+~~~~~~~~~~~~~~~~~~~~
+Authentication failure.
+
+GAP_REASON_TIMEOUT
+~~~~~~~~~~~~~~~~~~
+Timeout.
+
+GAP_REASON_PEER
+~~~~~~~~~~~~~~~
+Peer terminated connection.
+
+GAP_REASON_PEER_LOW_RES
+~~~~~~~~~~~~~~~~~~~~~~~
+Peer terminated connection on low resources.
+
+GAP_REASON_PEER_POWER_OFF
+~~~~~~~~~~~~~~~~~~~~~~~~
+Peer terminated connection on power off.
+
+GAP_REASON_HOST
+~~~~~~~~~~~~~~~
+Host terminated connection.
+
+GAP_REASON_PEER_NO_FEATURE
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Peer terminated connection on unknown feature.
+
+GAP_REASON_CTRL_PACKET_TIMEOUT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Control packet timeout.
+
+GAP_REASON_CTRL_PACKET_INSTANT_PASSED
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Control packet instant passed.
+
+GAP_REASON_UNIT_KEY_NOT_SUPPORTED
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unit key is not supported.
+
+GAP_REASON_BAD_CONN_INTERVAL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bad connection interval.
+
+GAP_REASON_MIC_FAIL
+~~~~~~~~~~~~~~~~~~~
+MIC failure.
+
+
+RETURN VALUE
+------------
+*gap_cmd_link_end ()* returns 0 for success, and an _errno_ like
+negative number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_set[3]
+linkmb:print_gap_evt_link_end[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

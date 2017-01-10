@@ -1,0 +1,33 @@
+print_gap_evt_link_set(3)
+========================
+
+
+NAME
+----
+print_gap_evt_link_set - prints a gap_evt_link_set event
+
+
+SYNOPSIS
+--------
+*void print_gap_evt_link_set (const gap_evt_link_set_t *'evt');*
+
+
+DESCRIPTION
+-----------
+*print_gap_evt_link_set ()* function prints the _evt_ struct.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_set[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

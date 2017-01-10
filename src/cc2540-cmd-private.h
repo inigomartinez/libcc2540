@@ -59,6 +59,20 @@ CC2540_BEGIN_DECLS
         {0}, \
     }
 
+#define HCI_CMD_LINK_SET(high_duty, white_list, addr_type) \
+    .cmd.link_set = { \
+        (high_duty), \
+        (white_list), \
+        (addr_type), \
+        {0}, \
+    }
+
+#define HCI_CMD_LINK_END(handle, reason) \
+    .cmd.link_end = { \
+        htole16 (handle), \
+        (reason), \
+    }
+
 #define HCI_CMD_PARAM_SET(param, value) \
     .cmd.param_set = { \
         (param), \

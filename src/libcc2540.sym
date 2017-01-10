@@ -14,6 +14,8 @@ global:
 	gap_cmd_disc_set;
 	gap_cmd_adv_set;
 	gap_cmd_disc_end;
+	gap_cmd_link_set;
+	gap_cmd_link_end;
 	gap_cmd_param_set;
 	gap_cmd_param_get;
 
@@ -27,6 +29,9 @@ global:
 	print_gap_evt_dev_disc;
 	print_gap_evt_adv_set_done;
 	print_gap_evt_disc_set_done;
+	print_gap_evt_link_set;
+	print_gap_evt_link_end;
+	print_gap_evt_link_update;
 	print_gap_evt_dev_info;
 	print_gap_evt_cmd_status;
 local:
