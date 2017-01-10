@@ -34,6 +34,7 @@ static struct {
     void     (*parser) (hci_evt_t *evt);
 } parsers[] = {
     {GAP_EVT_DEV_INIT_DONE, gap_evt_dev_init_done},
+    {GAP_EVT_ADV_SET_DONE,  NULL},
     {GAP_EVT_DEV_DISC,      gap_evt_dev_disc},
     {GAP_EVT_DEV_INFO,      gap_evt_dev_info},
     {GAP_EVT_CMD_STATUS,    gap_evt_cmd_status},
@@ -43,7 +44,8 @@ static struct {
 static inline int parse (hci_evt_t *evt) {
     for (uint8_t n = 0; parsers[n].evt_code; n++) {
         if (HCI_EVT_IS (*evt, parsers[n].evt_code)) {
-            parsers[n].parser (evt);
+            if (parsers[n].parser)
+                parsers[n].parser (evt);
             return 0;
         }
     }
@@ -113,6 +115,23 @@ gap_cmd_dev_disc_end (cc2540_t *dev) {
         HCI_INFO (GAP_CMD_DEV_DISC_END, 0)
     };
     hci_evt_t evt;
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
+gap_cmd_adv_set (cc2540_t      *dev,
+                 gap_adv_t      adv_type,
+                 uint8_t        data_len,
+                 const uint8_t  data[]) {
+    uint8_t len = (data_len <= GAP_ADV_MAX_LEN ? data_len : GAP_ADV_MAX_LEN);
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_ADV_SET, sizeof (adv_type) + sizeof (data_len) + len),
+        HCI_CMD_ADV_SET (adv_type, len)
+    };
+    hci_evt_t evt;
+
+    memcpy (hci.cmd.adv_set.data, data, len);
 
     return hci_cmd (dev, &hci, &evt);
 }

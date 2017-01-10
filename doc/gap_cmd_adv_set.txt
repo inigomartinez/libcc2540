@@ -1,0 +1,47 @@
+gap_cmd_adv_set(3)
+=================
+
+
+NAME
+----
+gap_cmd_adv_set - sends the advertisement data update command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_adv_set (cc2540_t *'dev', gap_adv_t 'adv_type', uint8_t 'data_len', const uint8_t 'data'[]);*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_adv_set ()* function sends the advertisement data update command to
+the _dev_ device setting _data_ as the advertisement, and its type as _adv_type_.
+
+If _data_len_ is higher that *32*, only *32* bytes will be used.
+
+The list of available advertisement types is as follows:
+
+GAP_ADV_SCAN_RSP
+~~~~~~~~~~~~~~~~
+Scan response.
+
+GAP_ADV_RAW
+~~~~~~~~~~~
+Raw advertisement.
+
+
+RETURN VALUE
+------------
+*gap_cmd_adv_set ()* returns 0 for success, and an _errno_ like
+negative number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:print_gap_evt_adv_set_done[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

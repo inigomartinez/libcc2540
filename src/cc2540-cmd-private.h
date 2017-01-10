@@ -43,6 +43,13 @@ CC2540_BEGIN_DECLS
         (white_list) \
     }
 
+#define HCI_CMD_ADV_SET(adv_type, data_len) \
+    .cmd.adv_set = { \
+        (adv_type), \
+        (data_len), \
+        {0}, \
+    }
+
 #define HCI_CMD_PARAM_SET(param, value) \
     .cmd.param_set = { \
         (param), \

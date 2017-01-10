@@ -29,7 +29,7 @@ test_dev_init (cc2540_t *dev) {
     hci_evt_t evt;
 
     if ((r = gap_cmd_dev_init (dev,
-                               GAP_PROFILE_OBSERVER,
+                               GAP_PROFILE_OBSERVER | GAP_PROFILE_BROADCASTER,
                                MAX_TAGS,
                                (uint8_t[BT_IRK_LEN]) {0},
                                (uint8_t[BT_CSRK_LEN]) {0},

@@ -9,6 +9,7 @@ TXT3 = \
 	gap_cmd_dev_addr_set.txt \
 	gap_cmd_dev_disc.txt \
 	gap_cmd_dev_disc_end.txt \
+	gap_cmd_adv_set.txt \
 	gap_cmd_param_set.txt \
 	gap_cmd_param_get.txt \
 	hci_cmd.txt \
@@ -16,6 +17,7 @@ TXT3 = \
 	hci_strerror.txt \
 	print_hci_evt_info.txt \
 	print_gap_evt_dev_init_done.txt \
+	print_gap_evt_adv_set_done.txt \
 	print_gap_evt_dev_disc.txt \
 	print_gap_evt_dev_info.txt \
 	print_gap_evt_cmd_status.txt

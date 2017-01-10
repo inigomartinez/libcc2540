@@ -11,6 +11,7 @@ global:
 	gap_cmd_dev_addr_set;
 	gap_cmd_dev_disc;
 	gap_cmd_dev_disc_end;
+	gap_cmd_adv_set;
 	gap_cmd_param_set;
 	gap_cmd_param_get;
 
@@ -22,6 +23,7 @@ global:
 	print_hci_evt_info;
 	print_gap_evt_dev_init_done;
 	print_gap_evt_dev_disc;
+	print_gap_evt_adv_set_done;
 	print_gap_evt_dev_info;
 	print_gap_evt_cmd_status;
 local:

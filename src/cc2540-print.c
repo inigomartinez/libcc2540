@@ -19,6 +19,11 @@ static const char *hci_type_str[] = {
     [HCI_TYPE_EVENT]      = "Event"
 };
 
+static const char *adv_type_str[] = {
+    [GAP_ADV_SCAN_RSP]  = "Scan response",
+    [GAP_ADV_RAW]       = "Raw advertisement"
+};
+
 static const char *evt_type_str[] = {
     [GAP_EVT_CONN_UNDIR]    = "Connectable undirected advertisement",
     [GAP_EVT_CONN_DIR]      = "Connectable directed advertisement",
@@ -61,6 +66,13 @@ print_gap_evt_dev_init_done (const gap_evt_dev_init_done_t *evt) {
     for (uint8_t n = 1; n < BT_CSRK_LEN; n++)
         printf (":%02x", evt->csrk[n]);
     printf ("\n");
+}
+
+CC2540_EXPORT void
+print_gap_evt_adv_set_done (const gap_evt_adv_set_done_t *evt) {
+    printf ("GAP_AdvertDataUpdateDone\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("adv_type: %s\n", adv_type_str[evt->adv_type]);
 }
 
 CC2540_EXPORT void
