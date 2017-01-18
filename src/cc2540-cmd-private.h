@@ -73,6 +73,29 @@ CC2540_BEGIN_DECLS
         (reason), \
     }
 
+#define HCI_CMD_AUTH(handle, \
+                     sec_io, sec_oob, sec_auth, sec_max_key_size, sec_key, \
+                     pair_enable, pair_io, pair_oob, pair_auth, pair_max_key_size, pair_key) \
+    .cmd.auth = { \
+        htole16 (handle), \
+        .sec = { \
+            (sec_io), \
+            (sec_oob), \
+            {0}, \
+            (sec_auth), \
+            (sec_max_key_size), \
+            (sec_key) \
+        }, \
+        .pair = { \
+            (pair_enable), \
+            (pair_io), \
+            (pair_oob), \
+            (pair_auth), \
+            (pair_max_key_size), \
+            (pair_key), \
+        } \
+    }
+
 #define HCI_CMD_PARAM_SET(param, value) \
     .cmd.param_set = { \
         (param), \

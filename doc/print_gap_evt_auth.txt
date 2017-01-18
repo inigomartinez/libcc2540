@@ -1,0 +1,33 @@
+print_gap_evt_auth(3)
+====================
+
+
+NAME
+----
+print_gap_evt_auth - prints a gap_evt_auth event
+
+
+SYNOPSIS
+--------
+*void print_gap_evt_auth (const gap_evt_auth_t *'evt');*
+
+
+DESCRIPTION
+-----------
+*print_gap_evt_auth ()* function prints the _evt_ struct.
+
+
+RETURN VALUE
+------------
+There is no return values.
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_auth[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

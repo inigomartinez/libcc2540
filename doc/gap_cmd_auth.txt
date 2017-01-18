@@ -1,0 +1,108 @@
+gap_cmd_auth(3)
+==============
+
+
+NAME
+----
+gap_cmd_auth - sends the authenticate command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_auth (cc2540_t *'dev', uint16_t 'handle', gap_io_t 'sec_io', bool 'sec_oob', uint8_t 'sec_oob_init'[BT_LTK_LEN], gap_auth_t 'sec_auth', uint8_t 'sec_max_key_size', gap_key_t 'sec_key', bool 'pair_enable', gap_io_t 'pair_io', bool 'pair_oob', gap_auth_t 'pair_auth', uint8_t 'pair_max_key_size', gap_key_t 'pair_key');*
+
+
+
+DESCRIPTION
+-----------
+*gap_cmd_auth ()* function sends the authenticate command to the _dev_ device
+to authenticate the connection using _handle_ and using the given data that is
+used in the authentication process.
+
+The list of available I/O settings is as follows:
+
+GAP_IO_DISPLAY_ONLY
+~~~~~~~~~~~~~~~~~~~
+Display only available.
+
+GAP_IO_DISPLAY_YN
+~~~~~~~~~~~~~~~~~
+Display, yes or no.
+
+GAP_IO_KEYB_ONLY
+~~~~~~~~~~~~~~~~
+Keyboard only.
+
+GAP_IO_NO_IO
+~~~~~~~~~~~~
+No input nor output.
+
+GAP_IO_KEYB_DISPLAY
+~~~~~~~~~~~~~~~~~~~
+Keyboard and display available.
+
+The list of available required authentication is as follows:
+
+GAP_AUTH_BONDING
+~~~~~~~~~~~~~~~~
+Bonding by exhanging and saving key information.
+
+GAP_AUTH_MITM_PROT
+~~~~~~~~~~~~~~~~~~
+Man-In-The-Middle protection.
+
+GAP_AUTH_LE_SEC
+~~~~~~~~~~~~~~~
+LE secure connection.
+
+The list of available key distribution bit fields is as follows:
+
+GAP_KEY_SLAVE_ENC
+~~~~~~~~~~~~~~~~~
+Slave encryption.
+
+GAP_KEY_SLAVE_IDENT
+~~~~~~~~~~~~~~~~~~~
+Slave identification.
+
+GAP_KEY_SLAVE_SIGN
+~~~~~~~~~~~~~~~~~~
+Slave signing.
+
+GAP_KEY_SLAVE_LTK
+~~~~~~~~~~~~~~~~~
+Slave LTK provides link key.
+
+GAP_KEY_MASTER_ENC
+~~~~~~~~~~~~~~~~~~
+Master encryption.
+
+GAP_KEY_MASTER_IDENT
+~~~~~~~~~~~~~~~~~~~~
+Master identification.
+
+GAP_KEY_MASTER_SIGN
+~~~~~~~~~~~~~~~~~~~
+Master signing.
+
+GAP_KEY_MASTER_LTK
+~~~~~~~~~~~~~~~~~~
+Master LTK provides link key.
+
+
+RETURN VALUE
+------------
+*gap_cmd_auth ()* returns 0 for success, and an _errno_ like negative
+number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_set[3]
+linkmb:print_gap_evt_auth[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

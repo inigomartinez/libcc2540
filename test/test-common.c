@@ -24,6 +24,9 @@
 #define ACTIVE_SCAN       false
 #define WHITE_LIST        false
 
+#define HIGH_DUTY         true
+#define WHITE_LIST        false
+
 #define IBEACON_UUID_LEN 16
 
 struct {
@@ -138,4 +141,37 @@ test_adv (cc2540_t *dev) {
     }
 
     return test_get_check (dev, &evt, GAP_EVT_ADV_SET_DONE, 0);
+}
+
+int
+test_link_set (cc2540_t      *dev,
+               gap_addr_t     addr_type,
+               const uint8_t  addr[BT_ADDR_LEN],
+               hci_evt_t     *evt) {
+    int r = 0;
+
+    if ((r = gap_cmd_link_set (dev,
+                               HIGH_DUTY,
+                               WHITE_LIST,
+                               addr_type,
+                               addr)) < 0) {
+        fprintf (stderr, "Error in gap_cmd_link_set: %s\n", strerror (-r));
+        return r;
+    }
+
+    return test_get_check (dev, evt, GAP_EVT_LINK_SET, 0);
+}
+
+int
+test_link_end (cc2540_t *dev,
+               uint16_t  handle) {
+    int r = 0;
+    hci_evt_t evt;
+
+    if ((r = gap_cmd_link_end (dev, handle, GAP_REASON_PEER)) < 0) {
+        fprintf (stderr, "Error in gap_cmd_link_end: %s\n", strerror (-r));
+        return r;
+    }
+
+    return test_get_check (dev, &evt, GAP_EVT_LINK_END, 0);
 }

@@ -13,19 +13,16 @@
 #include <cc2540.h>
 #include <cc2540-cmd.h>
 #include <cc2540-error.h>
-#include <cc2540-print.h>
 
 #include "test-common.h"
-
-#define HIGH_DUTY  true
-#define WHITE_LIST false
 
 int
 main (int argc, char **argv) {
     int r = EXIT_SUCCESS;
     cc2540_t *dev;
-    hci_evt_t disc_evt, evt;
+    hci_evt_t disc_evt, link_evt, evt;
     gap_evt_dev_disc_t *disc;
+    gap_evt_link_set_t *link;
 
     if (argc < 2) {
         fprintf (stderr, "use: %s /dev/ttyUSB0\n", argv[0]);
@@ -66,10 +63,33 @@ main (int argc, char **argv) {
     if ((r = test_link_set (dev,
                             disc->dev[0].addr_type,
                             disc->dev[0].addr,
-                            &evt)) < 0)
+                            &link_evt)) < 0)
         goto close_dev;
 
-    r = test_link_end (dev, GAP_EVT_LINK_SET_T (&(evt.evt))->handle);
+    link = GAP_EVT_LINK_SET_T (&(link_evt.evt));
+
+    test_get_check (dev, &evt, GAP_EVT_LINK_UPDATE, 0);
+
+    if ((r = gap_cmd_auth (dev, link->handle,
+                           GAP_IO_NO_IO,
+                           true,
+                           (uint8_t[BT_LTK_LEN]) {0},
+                           GAP_AUTH_BONDING,
+                           7,
+                           GAP_KEY_SLAVE_LTK | GAP_KEY_MASTER_LTK,
+                           true,
+                           GAP_IO_NO_IO,
+                           false,
+                           GAP_AUTH_LE_SEC,
+                           7,
+                           GAP_KEY_SLAVE_LTK | GAP_KEY_MASTER_LTK)) < 0) {
+            fprintf (stderr, "Error in gap_cmd_auth: %s\n", strerror (-r));
+            goto close_link;
+    }
+
+    r = test_get_check (dev, &evt, GAP_EVT_AUTH, 0);
+close_link:
+    test_link_end (dev, link->handle);
 close_dev:
     cc2540_close (dev);
 

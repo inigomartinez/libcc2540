@@ -65,6 +65,12 @@ static const char *reason_str[] = {
     [GAP_REASON_MIC_FAIL]                   = "MIC failure"
 };
 
+static const char *auth_str[] = {
+    [GAP_AUTH_BONDING]   = "Bonding",
+    [GAP_AUTH_MITM_PROT] = "Man-In-The-Middle protection",
+    [GAP_AUTH_LE_SEC]    = "LE Secure connection pairing"
+};
+
 CC2540_EXPORT void
 print_hci_evt_info (const hci_evt_info_t *evt) {
     printf ("HCI\n");
@@ -165,6 +171,59 @@ print_gap_evt_link_update (const gap_evt_link_update_t *evt) {
     printf ("interval: %f msec\n", GAP_EVT_LINK_INTERVAL (*evt));
     printf ("latency: %04x\n", evt->latency);
     printf ("timeout: %u msec\n", GAP_EVT_LINK_TIMEOUT (*evt));
+}
+
+CC2540_EXPORT void
+print_gap_evt_auth (const gap_evt_auth_t *evt) {
+    printf ("GAP_AuthenticationComplete\n");
+    printf ("status: 0x%02x\n", evt->status);
+    printf ("handle: 0x%04x\n", evt->handle);
+    printf ("auth: %s\n", auth_str[evt->auth]);
+    printf ("sec_info: %s\n", (evt->sec_info_status ? "yes" : "no"));
+    if (evt->sec_info_status) {
+        printf ("ltk_size: %u\n", evt->sec_info.ltk_size);
+        printf ("ltk: %02x", evt->sec_info.ltk[0]);
+        for (uint8_t n = 1; n < BT_LTK_LEN; n++)
+            printf (":%02x", evt->sec_info.ltk[n]);
+        printf ("\n");
+        printf ("div: 0x%04x\n", evt->sec_info.div);
+        printf ("rand: %02x", evt->sec_info.rand[0]);
+        for (uint8_t n = 1; n < BT_LTK_RAND_LEN; n++)
+            printf (":%02x", evt->sec_info.rand[n]);
+        printf ("\n");
+    }
+    printf ("dev_sec_info: %s\n", (evt->dev_sec_info_status ? "yes" : "no"));
+    if (evt->dev_sec_info_status) {
+        printf ("ltk_size: %u\n", evt->dev_sec_info.ltk_size);
+        printf ("ltk: %02x", evt->dev_sec_info.ltk[0]);
+        for (uint8_t n = 1; n < BT_LTK_LEN; n++)
+            printf (":%02x", evt->dev_sec_info.ltk[n]);
+        printf ("\n");
+        printf ("div: 0x%04x\n", evt->dev_sec_info.div);
+        printf ("rand: %02x", evt->dev_sec_info.rand[0]);
+        for (uint8_t n = 1; n < BT_LTK_RAND_LEN; n++)
+            printf (":%02x", evt->dev_sec_info.rand[n]);
+        printf ("\n");
+    }
+    printf ("ident_info: %s\n", (evt->ident_info_status ? "yes" : "no"));
+    if (evt->ident_info_status) {
+        printf ("irk: %02x\n", evt->ident_info.irk[0]);
+        for (uint8_t n = 1; n < BT_IRK_LEN; n++)
+            printf (":%02x", evt->ident_info.irk[n]);
+        printf ("\n");
+        printf ("addr: %02x\n", evt->ident_info.addr[0]);
+        for (uint8_t n = 1; n < BT_ADDR_LEN; n++)
+            printf (":%02x", evt->ident_info.addr[n]);
+        printf ("\n");
+    }
+    printf ("sign_info: %s\n", (evt->sign_info_status ? "yes" : "no"));
+    if (evt->sign_info_status) {
+        printf ("irk: %02x\n", evt->sign_info.irk[0]);
+        for (uint8_t n = 1; n < BT_IRK_LEN; n++)
+            printf (":%02x", evt->sign_info.irk[n]);
+        printf ("\n");
+        printf ("sign_counter: 0x%04x\n", evt->sign_info.sign_counter);
+    }
 }
 
 CC2540_EXPORT void

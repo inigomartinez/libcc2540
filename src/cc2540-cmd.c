@@ -30,6 +30,7 @@ void gap_evt_disc_set_done (hci_evt_t *evt);
 void gap_evt_link_set      (hci_evt_t *evt);
 void gap_evt_link_end      (hci_evt_t *evt);
 void gap_evt_link_update   (hci_evt_t *evt);
+void gap_evt_auth          (hci_evt_t *evt);
 void gap_evt_dev_info      (hci_evt_t *evt);
 void gap_evt_cmd_status    (hci_evt_t *evt);
 
@@ -45,6 +46,7 @@ static struct {
     {GAP_EVT_LINK_SET,      gap_evt_link_set},
     {GAP_EVT_LINK_END,      gap_evt_link_end},
     {GAP_EVT_LINK_UPDATE,   gap_evt_link_update},
+    {GAP_EVT_AUTH,          gap_evt_auth},
     {GAP_EVT_DEV_INFO,      gap_evt_dev_info},
     {GAP_EVT_CMD_STATUS,    gap_evt_cmd_status},
     {0}
@@ -205,6 +207,34 @@ gap_cmd_link_end (cc2540_t     *dev,
 }
 
 CC2540_EXPORT int
+gap_cmd_auth (cc2540_t   *dev,
+              uint16_t    handle,
+              gap_io_t    sec_io,
+              bool        sec_oob,
+              uint8_t     sec_oob_init[BT_LTK_LEN],
+              gap_auth_t  sec_auth,
+              uint8_t     sec_max_key_size,
+              gap_key_t   sec_key,
+              bool        pair_enable,
+              gap_io_t    pair_io,
+              bool        pair_oob,
+              gap_auth_t  pair_auth,
+              uint8_t     pair_max_key_size,
+              gap_key_t   pair_key) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_AUTH, sizeof (gap_cmd_auth_t)),
+        HCI_CMD_AUTH(handle,
+                     sec_io, sec_oob, sec_auth, sec_max_key_size, sec_key,
+                     pair_enable, pair_io, pair_oob, pair_auth, pair_max_key_size, pair_key)
+    };
+    hci_evt_t evt;
+
+    memcpy (hci.cmd.auth.sec.oob_init, sec_oob_init, BT_LTK_LEN);
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_param_set (cc2540_t    *dev,
                    gap_param_t  param,
                    uint16_t     value) {
@@ -320,6 +350,38 @@ gap_evt_link_update (hci_evt_t *evt) {
     data->interval = le16toh (data->interval);
     data->latency = le16toh (data->latency);
     data->timeout = le16toh (data->timeout);
+}
+
+void
+gap_evt_auth (hci_evt_t *evt) {
+    gap_evt_auth_t *data = GAP_EVT_AUTH_T (&(evt->evt));
+    size_t data_size = sizeof (*data);
+
+    data->handle = le16toh (data->handle);
+
+    if (data->sec_info_status) {
+        data->sec_info.div = le16toh (data->sec_info.div);
+    } else {
+        memmove (&(data->dev_sec_info_status), &(data->sec_info),
+                 data_size - offsetof (gap_evt_auth_t, dev_sec_info_status));
+    }
+
+    if (data->dev_sec_info_status) {
+        data->dev_sec_info.div = le16toh (data->dev_sec_info.div);
+    } else {
+        memmove (&(data->ident_info_status), &(data->dev_sec_info),
+                 data_size - offsetof (gap_evt_auth_t, ident_info_status));
+    }
+
+    if (data->ident_info_status) {
+        __reverse (data->ident_info.addr, BT_ADDR_LEN);
+    } else {
+        memmove (&(data->sign_info_status), &(data->ident_info),
+                 data_size - offsetof (gap_evt_auth_t, sign_info_status));
+    }
+
+    if (data->sign_info_status)
+        data->sign_info.sign_counter = le16toh (data->sign_info.sign_counter);
 }
 
 void

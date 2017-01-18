@@ -31,6 +31,7 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_DISC_END      0xFE08
 #define GAP_CMD_LINK_SET      0xFE09
 #define GAP_CMD_LINK_END      0xFE0A
+#define GAP_CMD_AUTH          0xFE0B
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
 
@@ -42,6 +43,7 @@ CC2540_BEGIN_DECLS
 #define GAP_EVT_LINK_SET      0x0605
 #define GAP_EVT_LINK_END      0x0606
 #define GAP_EVT_LINK_UPDATE   0x0607
+#define GAP_EVT_AUTH          0x060A
 #define GAP_EVT_DEV_INFO      0x060D
 #define GAP_EVT_CMD_STATUS    0x067F
 
@@ -133,6 +135,31 @@ typedef enum {
 } __attribute__((packed)) gap_reason_t;
 
 typedef enum {
+    GAP_IO_DISPLAY_ONLY,
+    GAP_IO_DISPLAY_YN,
+    GAP_IO_KEYB_ONLY,
+    GAP_IO_NO_IO,
+    GAP_IO_KEYB_DISPLAY
+} __attribute__((packed)) gap_io_t;
+
+typedef enum {
+    GAP_AUTH_BONDING,
+    GAP_AUTH_MITM_PROT = 2,
+    GAP_AUTH_LE_SEC,
+} __attribute__((packed)) gap_auth_t;
+
+typedef enum {
+    GAP_KEY_SLAVE_ENC    = (1 << 0),
+    GAP_KEY_SLAVE_IDENT  = (1 << 1),
+    GAP_KEY_SLAVE_SIGN   = (1 << 2),
+    GAP_KEY_SLAVE_LTK    = (1 << 3),
+    GAP_KEY_MASTER_ENC   = (1 << 4),
+    GAP_KEY_MASTER_IDENT = (1 << 5),
+    GAP_KEY_MASTER_SIGN  = (1 << 6),
+    GAP_KEY_MASTER_LTK   = (1 << 7)
+} __attribute__((packed)) gap_key_t;
+
+typedef enum {
     TGAP_GEN_DISC_ADV_MIN,
     TGAP_LIM_ADV_TIMEOUT,
     TGAP_GEN_DISC_SCAN,
@@ -179,6 +206,13 @@ typedef enum {
     TGAP_GGS_TESTCODE,
     TGAP_L2CAP_TESTCODE
 } __attribute__((packed)) gap_param_t;
+
+typedef struct {
+    uint8_t  ltk_size;
+    uint8_t  ltk[BT_LTK_LEN];
+    uint16_t div;
+    uint8_t  rand[BT_LTK_RAND_LEN];
+} __attribute__((packed)) gap_sec_info_t;
 
 typedef struct {
     hci_type_t type;
@@ -239,6 +273,26 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_link_end_t;
 
 typedef struct {
+    uint16_t     handle;
+    struct {
+        gap_io_t   io;
+        bool       oob;
+        uint8_t    oob_init[BT_LTK_LEN];
+        gap_auth_t auth;
+        uint8_t    max_key_size;
+        gap_key_t  key;
+    } sec;
+    struct {
+        bool       enable;
+        gap_io_t   io;
+        bool       oob;
+        gap_auth_t auth;
+        uint8_t    max_key_size;
+        gap_key_t  key;
+    } pair;
+} __attribute__((packed)) gap_cmd_auth_t;
+
+typedef struct {
     gap_param_t param;
     uint16_t    value;
 } __attribute__((packed)) gap_cmd_param_set_t;
@@ -255,6 +309,7 @@ typedef union {
     gap_cmd_adv_set_t      adv_set;
     gap_cmd_link_set_t     link_set;
     gap_cmd_link_end_t     link_end;
+    gap_cmd_auth_t         auth;
     gap_cmd_param_set_t    param_set;
     gap_cmd_param_get_t    param_get;
 } __attribute__((packed)) gap_cmd_t;
@@ -337,6 +392,28 @@ typedef struct {
 #define GAP_EVT_LINK_TIMEOUT(o)  ((o).timeout * 10)
 
 typedef struct {
+    uint8_t        status;
+    uint16_t       handle;
+    gap_auth_t     auth;
+    bool           sec_info_status;
+    gap_sec_info_t sec_info;
+    bool           dev_sec_info_status;
+    gap_sec_info_t dev_sec_info;
+    bool           ident_info_status;
+    struct {
+        uint8_t irk[BT_IRK_LEN];
+        uint8_t addr[BT_ADDR_LEN];
+    } ident_info;
+    bool           sign_info_status;
+    struct {
+        uint8_t  irk[BT_IRK_LEN];
+        uint16_t sign_counter;
+    } sign_info;
+} __attribute__((packed)) gap_evt_auth_t;
+
+#define GAP_EVT_AUTH_T(o) ((gap_evt_auth_t *) o)
+
+typedef struct {
     uint8_t    status;
     gap_evt_t  evt_type;
     gap_addr_t addr_type;
@@ -400,6 +477,20 @@ int gap_cmd_link_set     (cc2540_t        *dev,
 int gap_cmd_link_end     (cc2540_t        *dev,
                           uint16_t         handle,
                           gap_reason_t     reason);
+int gap_cmd_auth         (cc2540_t        *dev,
+                          uint16_t         handle,
+                          gap_io_t         sec_io,
+                          bool             sec_oob,
+                          uint8_t          sec_oob_init[BT_LTK_LEN],
+                          gap_auth_t       sec_auth,
+                          uint8_t          sec_max_key_size,
+                          gap_key_t        sec_key,
+                          bool             pair_enable,
+                          gap_io_t         pair_io,
+                          bool             pair_oob,
+                          gap_auth_t       pair_auth,
+                          uint8_t          pair_max_key_size,
+                          gap_key_t        pair_key);
 int gap_cmd_param_set    (cc2540_t        *dev,
                           gap_param_t      param,
                           uint16_t         value);
