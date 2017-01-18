@@ -9,11 +9,13 @@ AM_CFLAGS = ${my_CFLAGS}
 
 LDADD = ${top_builddir}/src/libcc2540.la
 
+TESTS_ENVIRONMENT = $(SHELL) test-device.sh
+
 TEST_COMMON = \
 	test-common.h \
 	test-common.c
 
-noinst_PROGRAMS = \
+TESTS = \
 	test-cc2540 \
 	test-gap-dev-init \
 	test-gap-dev-addr-set \
@@ -21,10 +23,13 @@ noinst_PROGRAMS = \
 	test-gap-dev-disc-end \
 	test-gap-disc-set \
 	test-gap-adv-set \
-	test-gap-link-set \
-	test-gap-auth \
 	test-gap-param-set \
 	test-gap-param-get
+
+check_PROGRAMS = \
+	${TESTS} \
+	test-gap-link-set \
+	test-gap-auth
 
 test_gap_dev_init_SOURCES = ${TEST_COMMON} test-gap-dev-init.c
 test_gap_dev_addr_set_SOURCES = ${TEST_COMMON} test-gap-dev-addr-set.c

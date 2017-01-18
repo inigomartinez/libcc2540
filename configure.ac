@@ -52,6 +52,7 @@ AM_INIT_AUTOMAKE([
 	-Wall
 	-Wno-portability
 	silent-rules
+	serial-tests
 	tar-pax
 	no-dist-gzip
 	dist-xz
