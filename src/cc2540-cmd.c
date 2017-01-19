@@ -235,6 +235,22 @@ gap_cmd_auth (cc2540_t   *dev,
 }
 
 CC2540_EXPORT int
+gap_cmd_link_update (cc2540_t *dev,
+                     uint16_t  handle,
+                     uint16_t  min_interval,
+                     uint16_t  max_interval,
+                     uint16_t  latency,
+                     uint16_t  timeout) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_LINK_UPDATE, sizeof (gap_cmd_link_update_t)),
+        HCI_CMD_LINK_UPDATE(handle, min_interval, max_interval, latency, timeout)
+    };
+    hci_evt_t evt;
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_param_set (cc2540_t    *dev,
                    gap_param_t  param,
                    uint16_t     value) {

@@ -149,9 +149,9 @@ print_gap_evt_link_set (const gap_evt_link_set_t *evt) {
     if (evt->role & GAP_PROFILE_CENTRAL)
         printf ("|GAP_PROFILE_CENTRAL|");
     printf ("\n");
-    printf ("interval: %f msec\n", GAP_EVT_LINK_INTERVAL (*evt));
+    printf ("interval: %f msec\n", GAP_INTERVAL_TO_MSEC (evt->interval));
     printf ("latency: %04x\n", evt->latency);
-    printf ("timeout: %u msec\n", GAP_EVT_LINK_TIMEOUT (*evt));
+    printf ("timeout: %u msec\n", GAP_TIMEOUT_TO_MSEC (evt->timeout));
     printf ("clock_accuracy: %s\n", clock_str[evt->clock_accuracy]);
 }
 
@@ -168,9 +168,9 @@ print_gap_evt_link_update (const gap_evt_link_update_t *evt) {
     printf ("GAP_LinkParamUpdate\n");
     printf ("status: 0x%02x\n", evt->status);
     printf ("handle: %04x\n", evt->handle);
-    printf ("interval: %f msec\n", GAP_EVT_LINK_INTERVAL (*evt));
+    printf ("interval: %f msec\n", GAP_INTERVAL_TO_MSEC (evt->interval));
     printf ("latency: %04x\n", evt->latency);
-    printf ("timeout: %u msec\n", GAP_EVT_LINK_TIMEOUT (*evt));
+    printf ("timeout: %u msec\n", GAP_TIMEOUT_TO_MSEC (evt->timeout));
 }
 
 CC2540_EXPORT void

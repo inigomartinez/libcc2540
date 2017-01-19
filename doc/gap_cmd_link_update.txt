@@ -1,0 +1,45 @@
+gap_cmd_link_update(3)
+=====================
+
+
+NAME
+----
+gap_cmd_link_update - sends the link parameter update command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_link_update (cc2540_t *'dev', uint16_t 'handle', uint16_t 'min_interval', uint16_t 'max_interval', uint16_t 'latency', uint16_t 'timeout');*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_link_update ()* function sends the link paramter update command to
+the _dev_ device to update the given _handle_, _min_interval_, _max_interval_,
+_latency_ and _timeout_ parameters at once.
+
+_min_interval_ and _max_interval_ values are using device units. The
+GAP_MSEC_TO_INTERVAL and GAP_INTERVAL_TO_MSEC could be used to convert to/from
+milliseconds.
+
+_timeout_ value is using a device unit. The GAP_TIMEOUT_TO_MSEC and
+GAP_MSEC_TO_TIMEOUT could be used to convert to/from milliseconds.
+
+
+RETURN VALUE
+------------
+*gap_cmd_link_update ()* returns 0 for success, and an _errno_ like
+negative number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_set[3]
+linkmb:gap_cmd_link_end[3]
+linkmb:print_gap_evt_link_update[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>

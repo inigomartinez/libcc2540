@@ -32,6 +32,7 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_LINK_SET      0xFE09
 #define GAP_CMD_LINK_END      0xFE0A
 #define GAP_CMD_AUTH          0xFE0B
+#define GAP_CMD_LINK_UPDATE   0xFE11
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
 
@@ -53,6 +54,20 @@ CC2540_BEGIN_DECLS
 
 #define GAP_HANDLE_LINK 0xFFFE
 #define GAP_HANDLE_ALL  0xFFFF
+
+#define GAP_INTERVAL_TO_MSEC(v) ((v) * 1.25f)
+#define GAP_TIMEOUT_TO_MSEC(v)  ((v) * 10)
+#define GAP_MSEC_TO_INTERVAL(v) ((v) / 1.25f)
+#define GAP_MSEC_TO_TIMEOUT(v)  ((v) / 10)
+
+#define GAP_INTERVAL_MIN 0x0006
+#define GAP_INTERVAL_MAX 0x0C80
+
+#define GAP_LATENCY_MIN  0x0000
+#define GAP_LATENCY_MAX  0x01F3
+
+#define GAP_TIMEOUT_MIN  0x000A
+#define GAP_TIMEOUT_MAX  0x0C80
 
 typedef enum {
     HCI_TYPE_CMD        = 0x01,
@@ -293,6 +308,14 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_auth_t;
 
 typedef struct {
+    uint16_t handle;
+    uint16_t min_interval;
+    uint16_t max_interval;
+    uint16_t latency;
+    uint16_t timeout;
+} __attribute__((packed)) gap_cmd_link_update_t;
+
+typedef struct {
     gap_param_t param;
     uint16_t    value;
 } __attribute__((packed)) gap_cmd_param_set_t;
@@ -310,6 +333,7 @@ typedef union {
     gap_cmd_link_set_t     link_set;
     gap_cmd_link_end_t     link_end;
     gap_cmd_auth_t         auth;
+    gap_cmd_link_update_t  link_update;
     gap_cmd_param_set_t    param_set;
     gap_cmd_param_get_t    param_get;
 } __attribute__((packed)) gap_cmd_t;
@@ -387,9 +411,6 @@ typedef struct {
 } __attribute__((packed)) gap_evt_link_update_t;
 
 #define GAP_EVT_LINK_UPDATE_T(o) ((gap_evt_link_update_t *) o)
-
-#define GAP_EVT_LINK_INTERVAL(o) ((o).interval * 1.25f)
-#define GAP_EVT_LINK_TIMEOUT(o)  ((o).timeout * 10)
 
 typedef struct {
     uint8_t        status;
@@ -491,6 +512,12 @@ int gap_cmd_auth         (cc2540_t        *dev,
                           gap_auth_t       pair_auth,
                           uint8_t          pair_max_key_size,
                           gap_key_t        pair_key);
+int gap_cmd_link_update  (cc2540_t        *dev,
+                          uint16_t         handle,
+                          uint16_t         min_interval,
+                          uint16_t         max_interval,
+                          uint16_t         latency,
+                          uint16_t         timeout);
 int gap_cmd_param_set    (cc2540_t        *dev,
                           gap_param_t      param,
                           uint16_t         value);

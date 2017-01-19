@@ -96,6 +96,15 @@ CC2540_BEGIN_DECLS
         } \
     }
 
+#define HCI_CMD_LINK_UPDATE(handle, min_interval, max_interval, latency, timeout) \
+    .cmd.link_update = { \
+        htole16 (handle), \
+        htole16 (min_interval), \
+        htole16 (max_interval), \
+        htole16 (latency), \
+        htole16 (timeout), \
+    }
+
 #define HCI_CMD_PARAM_SET(param, value) \
     .cmd.param_set = { \
         (param), \

@@ -17,6 +17,7 @@ global:
 	gap_cmd_link_set;
 	gap_cmd_link_end;
 	gap_cmd_auth;
+	gap_cmd_link_update;
 	gap_cmd_param_set;
 	gap_cmd_param_get;
 
