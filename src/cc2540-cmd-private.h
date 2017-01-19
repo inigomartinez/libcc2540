@@ -96,6 +96,12 @@ CC2540_BEGIN_DECLS
         } \
     }
 
+#define HCI_CMD_PASS_UPDATE(handle) \
+    .cmd.pass_update = { \
+        htole16 (handle), \
+        {0}, \
+    },
+
 #define HCI_CMD_LINK_UPDATE(handle, min_interval, max_interval, latency, timeout) \
     .cmd.link_update = { \
         htole16 (handle), \

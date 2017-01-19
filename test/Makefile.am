@@ -30,6 +30,7 @@ check_PROGRAMS = \
 	${TESTS} \
 	test-gap-link-set \
 	test-gap-auth \
+	test-gap-pass-update \
 	test-gap-link-update
 
 test_gap_dev_init_SOURCES = ${TEST_COMMON} test-gap-dev-init.c
@@ -40,4 +41,5 @@ test_gap_disc_set_SOURCES = ${TEST_COMMON} test-gap-disc-set.c
 test_gap_adv_set_SOURCES = ${TEST_COMMON} test-gap-adv-set.c
 test_gap_link_set_SOURCES = ${TEST_COMMON} test-gap-link-set.c
 test_gap_auth_SOURCES = ${TEST_COMMON} test-gap-auth.c
+test_gap_pass_update_SOURCES = ${TEST_COMMON} test-gap-pass-update.c
 test_gap_link_update_SOURCES = ${TEST_COMMON} test-gap-link-update.c
