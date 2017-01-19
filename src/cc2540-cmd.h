@@ -33,6 +33,7 @@ CC2540_BEGIN_DECLS
 #define GAP_CMD_LINK_END      0xFE0A
 #define GAP_CMD_AUTH          0xFE0B
 #define GAP_CMD_PASS_UPDATE   0xFE0C
+#define GAP_CMD_SLAVE_SEC     0xFE0D
 #define GAP_CMD_LINK_UPDATE   0xFE11
 #define GAP_CMD_PARAM_SET     0xFE30
 #define GAP_CMD_PARAM_GET     0xFE31
@@ -317,6 +318,11 @@ typedef struct {
 } __attribute__((packed)) gap_cmd_pass_update_t;
 
 typedef struct {
+    uint16_t   handle;
+    gap_auth_t auth;
+} __attribute__((packed)) gap_cmd_slave_sec_t;
+
+typedef struct {
     uint16_t handle;
     uint16_t min_interval;
     uint16_t max_interval;
@@ -343,6 +349,7 @@ typedef union {
     gap_cmd_link_end_t     link_end;
     gap_cmd_auth_t         auth;
     gap_cmd_pass_update_t  pass_update;
+    gap_cmd_slave_sec_t    slave_sec;
     gap_cmd_link_update_t  link_update;
     gap_cmd_param_set_t    param_set;
     gap_cmd_param_get_t    param_get;
@@ -525,6 +532,9 @@ int gap_cmd_auth         (cc2540_t        *dev,
 int gap_cmd_pass_update  (cc2540_t        *dev,
                           uint16_t         handle,
                           const char       pass[GAP_PASS_STR_LEN]);
+int gap_cmd_slave_sec    (cc2540_t        *dev,
+                          uint16_t         handle,
+                          gap_auth_t       auth);
 int gap_cmd_link_update  (cc2540_t        *dev,
                           uint16_t         handle,
                           uint16_t         min_interval,

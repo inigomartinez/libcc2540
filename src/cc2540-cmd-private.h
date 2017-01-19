@@ -102,6 +102,12 @@ CC2540_BEGIN_DECLS
         {0}, \
     },
 
+#define HCI_CMD_SLAVE_SEC(handle, auth) \
+    .cmd.slave_sec = { \
+        htole16 (handle), \
+        (auth), \
+    },
+
 #define HCI_CMD_LINK_UPDATE(handle, min_interval, max_interval, latency, timeout) \
     .cmd.link_update = { \
         htole16 (handle), \

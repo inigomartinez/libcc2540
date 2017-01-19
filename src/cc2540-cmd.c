@@ -250,6 +250,19 @@ gap_cmd_pass_update (cc2540_t   *dev,
 }
 
 CC2540_EXPORT int
+gap_cmd_slave_sec (cc2540_t   *dev,
+                   uint16_t    handle,
+                   gap_auth_t  auth) {
+    hci_cmd_t hci = {
+        HCI_INFO (GAP_CMD_SLAVE_SEC, sizeof (gap_cmd_slave_sec_t)),
+        HCI_CMD_SLAVE_SEC(handle, auth)
+    };
+    hci_evt_t evt;
+
+    return hci_cmd (dev, &hci, &evt);
+}
+
+CC2540_EXPORT int
 gap_cmd_link_update (cc2540_t *dev,
                      uint16_t  handle,
                      uint16_t  min_interval,

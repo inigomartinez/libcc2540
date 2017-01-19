@@ -16,6 +16,7 @@ TXT3 = \
 	gap_cmd_link_end.txt \
 	gap_cmd_auth.txt \
 	gap_cmd_pass_update.txt \
+	gap_cmd_slave_sec.txt \
 	gap_cmd_link_update.txt \
 	gap_cmd_param_set.txt \
 	gap_cmd_param_get.txt \

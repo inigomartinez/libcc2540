@@ -1,0 +1,50 @@
+gap_cmd_slave_sec(3)
+===================
+
+
+NAME
+----
+gap_cmd_slave_sec - sends the slave security request command
+
+
+SYNOPSIS
+--------
+*int gap_cmd_slave_sec (cc2540_t *'dev', uint16_t 'handle', gap_auth_t 'auth');*
+
+
+DESCRIPTION
+-----------
+*gap_cmd_slave_sec ()* function sends the slave security request command to
+the _dev_ device to request _auth_ to the given _handle_.
+
+The list of available authentication is as follows:
+
+GAP_AUTH_BONDING
+~~~~~~~~~~~~~~~~
+Bonding by exhanging and saving key information.
+
+GAP_AUTH_MITM_PROT
+~~~~~~~~~~~~~~~~~~
+Man-In-The-Middle protection.
+
+GAP_AUTH_LE_SEC
+~~~~~~~~~~~~~~~
+LE secure connection.
+
+
+RETURN VALUE
+------------
+*gap_cmd_slave_sec ()* returns 0 for success, and an _errno_ like
+negative number for failure (_errno_ is also set appropriately).
+
+
+SEE ALSO
+--------
+linkmb:gap_cmd_link_set[3]
+linkmb:gap_cmd_link_end[3]
+
+
+AUTHORS
+-------
+The libcc2540 documentation was written by Iñigo Martínez
+<inigomartinez@gmail.com>
